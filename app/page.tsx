@@ -110,7 +110,7 @@ export default function LuxuryTravelAgency() {
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: `url('/placeholder-8fils.png')`,
+            backgroundImage: `url('/luxury-tropical-resort-with-overwater-bungalows.jpg')`,
           }}
         >
           <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-black/30" />
@@ -168,7 +168,7 @@ export default function LuxuryTravelAgency() {
 
             <div className="relative">
               <img
-                src="/placeholder-0f1n0.png"
+                src="/professional-travel-consultants-luxury-office.jpg"
                 alt="Notre équipe"
                 className="w-full h-[600px] object-cover rounded-2xl shadow-2xl"
               />
@@ -251,7 +251,11 @@ export default function LuxuryTravelAgency() {
               >
                 <div className="relative h-80">
                   <img
-                    src={`/abstract-geometric-shapes.png?height=320&width=600&query=${service.image}`}
+                    src={
+                      index === 0
+                        ? "/custom-travel-planning-luxury-materials.jpg"
+                        : "/vip-exclusive-cultural-experience.jpg"
+                    }
                     alt={service.title}
                     className="w-full h-full object-cover"
                   />
