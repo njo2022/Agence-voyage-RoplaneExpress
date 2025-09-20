@@ -1,6 +1,8 @@
 "use client"
 
 import { useState } from "react"
+import emailjs from '@emailjs/browser'
+import { emailConfig } from '@/lib/email-config'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -27,6 +29,20 @@ import {
 export default function LuxuryTravelAgency() {
   const [activeSection, setActiveSection] = useState("accueil")
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [reservationOpen, setReservationOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [reservationData, setReservationData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    destination: "",
+    departureDate: "",
+    returnDate: "",
+    travelers: "",
+    budget: "",
+    message: ""
+  })
 
   const scrollToSection = (sectionId: string) => {
     setActiveSection(sectionId)
@@ -35,6 +51,62 @@ export default function LuxuryTravelAgency() {
     if (element) {
       element.scrollIntoView({ behavior: "smooth" })
     }
+  }
+
+  const handleReservationSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsLoading(true)
+
+    try {
+      // Utilisation de la configuration centralisée
+      const { serviceId, templateId, publicKey, destinationEmail } = emailConfig
+
+      // Préparer les données pour l'email
+      const templateParams = {
+        to_email: destinationEmail,
+        from_name: `${reservationData.firstName} ${reservationData.lastName}`,
+        from_email: reservationData.email,
+        phone: reservationData.phone,
+        destination: reservationData.destination,
+        departure_date: reservationData.departureDate,
+        return_date: reservationData.returnDate,
+        travelers: reservationData.travelers,
+        budget: reservationData.budget,
+        message: reservationData.message,
+        reply_to: reservationData.email
+      }
+
+      // Envoyer l'email
+      await emailjs.send(serviceId, templateId, templateParams, publicKey)
+      
+      alert("Votre demande de réservation a été envoyée avec succès ! Nous vous contacterons dans les plus brefs délais.")
+      setReservationOpen(false)
+      setReservationData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        destination: "",
+        departureDate: "",
+        returnDate: "",
+        travelers: "",
+        budget: "",
+        message: ""
+      })
+    } catch (error) {
+      console.error('Erreur lors de l\'envoi de l\'email:', error)
+      alert("Une erreur est survenue lors de l'envoi de votre demande. Veuillez réessayer ou nous contacter directement.")
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target
+    setReservationData(prev => ({
+      ...prev,
+      [name]: value
+    }))
   }
 
   return (
@@ -75,7 +147,10 @@ export default function LuxuryTravelAgency() {
             {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
 
-          <Button className="hidden md:block bg-accent text-accent-foreground hover:bg-accent/90">
+          <Button 
+            className="hidden md:block bg-accent text-accent-foreground hover:bg-accent/90"
+            onClick={() => setReservationOpen(true)}
+          >
             Réserver Maintenant
           </Button>
         </div>
@@ -98,7 +173,10 @@ export default function LuxuryTravelAgency() {
                   {item.label}
                 </button>
               ))}
-              <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
+              <Button 
+                className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
+                onClick={() => setReservationOpen(true)}
+              >
                 Réserver Maintenant
               </Button>
             </div>
@@ -110,7 +188,7 @@ export default function LuxuryTravelAgency() {
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: `url('/luxury-tropical-resort-with-overwater-bungalows.jpg')`,
+            backgroundImage: `url('/a-beach-with-a-hut-on-it.jpg')`,
           }}
         >
           <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-black/30" />
@@ -168,7 +246,7 @@ export default function LuxuryTravelAgency() {
 
             <div className="relative">
               <img
-                src="/professional-travel-consultants-luxury-office.jpg"
+                src="livre-histoire-de-voyage-avec-agence-de-voyage.jpg"
                 alt="Notre équipe"
                 className="w-full h-[600px] object-cover rounded-2xl shadow-2xl"
               />
@@ -235,14 +313,14 @@ export default function LuxuryTravelAgency() {
                 description: "Itinéraires personnalisés créés exclusivement selon vos désirs et préférences.",
                 image: "luxury travel planner working on custom itinerary with world map and premium materials",
                 features: ["Consultation privée", "Itinéraire exclusif", "Conciergerie 24/7"],
-                price: "À partir de 5 000€",
+                
               },
               {
                 title: "Expériences VIP",
                 description: "Accès privilégié aux événements exclusifs et aux lieux les plus prestigieux.",
                 image: "VIP access to exclusive cultural event with private guide and champagne service",
                 features: ["Accès privé", "Guide expert", "Transport de luxe"],
-                price: "À partir de 8 000€",
+                
               },
             ].map((service, index) => (
               <Card
@@ -253,8 +331,8 @@ export default function LuxuryTravelAgency() {
                   <img
                     src={
                       index === 0
-                        ? "/custom-travel-planning-luxury-materials.jpg"
-                        : "/vip-exclusive-cultural-experience.jpg"
+                        ? "/Voyage-sur-mesure.JPG"
+                        : "/chauffeur-et-client-heureux.jpg"
                     }
                     alt={service.title}
                     className="w-full h-full object-cover"
@@ -278,7 +356,10 @@ export default function LuxuryTravelAgency() {
 
                   <div className="flex items-center justify-between">
                     <span className="text-2xl font-bold text-accent">{service.price}</span>
-                    <Button className="bg-primary text-primary-foreground hover:bg-primary/90 px-8">
+                    <Button 
+                      className="bg-primary text-primary-foreground hover:bg-primary/90 px-8"
+                      onClick={() => scrollToSection("contact")}
+                    >
                       En Savoir Plus
                     </Button>
                   </div>
@@ -413,8 +494,8 @@ export default function LuxuryTravelAgency() {
                     {
                       icon: <MapPin className="h-6 w-6 text-accent" />,
                       title: "Adresse",
-                      content: "25 Avenue des Champs-Élysées",
-                      subtitle: "75008 Paris, France",
+                      content: "Dakar - Sénégal",
+                      subtitle: "75008 Dakar, Sénégal",
                     },
                     {
                       icon: <Clock className="h-6 w-6 text-accent" />,
@@ -433,15 +514,6 @@ export default function LuxuryTravelAgency() {
                     </div>
                   ))}
                 </div>
-              </div>
-
-              {/* Map Placeholder */}
-              <div className="bg-muted rounded-xl p-8 text-center">
-                <MapPin className="h-16 w-16 text-accent mx-auto mb-4" />
-                <h4 className="text-xl font-bold text-foreground mb-2">Visitez Notre Boutique</h4>
-                <p className="text-muted-foreground">
-                  Rencontrez nos experts voyage dans notre boutique parisienne sur les Champs-Élysées
-                </p>
               </div>
             </div>
           </div>
@@ -535,6 +607,181 @@ export default function LuxuryTravelAgency() {
           </div>
         </div>
       </footer>
+
+      {/* Modal de Réservation */}
+      {reservationOpen && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-background rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-8">
+              <div className="flex items-center justify-between mb-8">
+                <h2 className="text-3xl font-bold text-foreground">Réservation de Voyage</h2>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setReservationOpen(false)}
+                  className="p-2"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+
+              <form onSubmit={handleReservationSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-2">Prénom *</label>
+                    <Input
+                      name="firstName"
+                      value={reservationData.firstName}
+                      onChange={handleInputChange}
+                      placeholder="Votre prénom"
+                      required
+                      className="bg-background border-border focus:ring-accent"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-2">Nom *</label>
+                    <Input
+                      name="lastName"
+                      value={reservationData.lastName}
+                      onChange={handleInputChange}
+                      placeholder="Votre nom"
+                      required
+                      className="bg-background border-border focus:ring-accent"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-2">Email *</label>
+                    <Input
+                      type="email"
+                      name="email"
+                      value={reservationData.email}
+                      onChange={handleInputChange}
+                      placeholder="votre@email.com"
+                      required
+                      className="bg-background border-border focus:ring-accent"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-2">Téléphone *</label>
+                    <Input
+                      name="phone"
+                      value={reservationData.phone}
+                      onChange={handleInputChange}
+                      placeholder="+221 77 123 45 67"
+                      required
+                      className="bg-background border-border focus:ring-accent"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-2">Destination souhaitée *</label>
+                  <Input
+                    name="destination"
+                    value={reservationData.destination}
+                    onChange={handleInputChange}
+                    placeholder="Où souhaitez-vous voyager ?"
+                    required
+                    className="bg-background border-border focus:ring-accent"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-2">Date de départ *</label>
+                    <Input
+                      type="date"
+                      name="departureDate"
+                      value={reservationData.departureDate}
+                      onChange={handleInputChange}
+                      required
+                      className="bg-background border-border focus:ring-accent"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-2">Date de retour</label>
+                    <Input
+                      type="date"
+                      name="returnDate"
+                      value={reservationData.returnDate}
+                      onChange={handleInputChange}
+                      className="bg-background border-border focus:ring-accent"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-2">Nombre de voyageurs *</label>
+                    <select
+                      name="travelers"
+                      value={reservationData.travelers}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full p-3 bg-background border border-border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"
+                    >
+                      <option value="">Sélectionnez</option>
+                      <option value="1">1 personne</option>
+                      <option value="2">2 personnes</option>
+                      <option value="3">3 personnes</option>
+                      <option value="4">4 personnes</option>
+                      <option value="5+">5+ personnes</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-2">Budget approximatif</label>
+                    <select
+                      name="budget"
+                      value={reservationData.budget}
+                      onChange={handleInputChange}
+                      className="w-full p-3 bg-background border border-border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"
+                    >
+                      <option value="">Sélectionnez</option>
+                      <option value="5000-10000">5 000€ - 10 000€</option>
+                      <option value="10000-25000">10 000€ - 25 000€</option>
+                      <option value="25000-50000">25 000€ - 50 000€</option>
+                      <option value="50000+">50 000€+</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-2">Message spécial</label>
+                  <textarea
+                    name="message"
+                    value={reservationData.message}
+                    onChange={handleInputChange}
+                    rows={4}
+                    placeholder="Décrivez-nous votre voyage idéal, vos préférences, vos attentes..."
+                    className="w-full p-3 bg-background border border-border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent resize-none"
+                  />
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-4 pt-6">
+                  <Button
+                    type="submit"
+                    disabled={isLoading}
+                    className="flex-1 bg-accent text-accent-foreground hover:bg-accent/90 text-lg py-6 disabled:opacity-50"
+                  >
+                    {isLoading ? "Envoi en cours..." : "Envoyer ma Demande de Réservation"}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setReservationOpen(false)}
+                    className="flex-1 text-lg py-6"
+                  >
+                    Annuler
+                  </Button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
