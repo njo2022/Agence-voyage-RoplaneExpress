@@ -1,0 +1,4 @@
+# Ignore pnpm files
+pnpm-lock.yaml
+.pnpm-store/
+node_modules/.pnpm/
