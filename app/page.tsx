@@ -2,11 +2,11 @@
 
 import { useState } from "react"
 import emailjs from '@emailjs/browser'
-import { emailConfig } from '@/lib/email-config'
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
+import { emailConfig } from '../lib/email-config'
+import { Button } from "../components/ui/button"
+import { Card, CardContent } from "../components/ui/card"
+import { Input } from "../components/ui/input"
+import { Badge } from "../components/ui/badge"
 import {
   MapPin,
   Users,
