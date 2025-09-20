@@ -1,33 +1,110 @@
-# Travel agency landing page
-
-*Automatically synced with your [v0.app](https://v0.app) deployments*
+# ✈️ Élite Voyages - Landing Page
 
 [![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/njo2022s-projects/v0-travel-agency-landing-page)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/projects/DFWFTMSzDod)
+[![Built with Next.js](https://img.shields.io/badge/Built%20with-Next.js-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![Styled with Tailwind](https://img.shields.io/badge/Styled%20with-Tailwind%20CSS-blue?style=for-the-badge&logo=tailwindcss)](https://tailwindcss.com/)
 
-## Overview
+## 🎯 Vue d'ensemble
 
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
+**Élite Voyages** est une landing page moderne pour une agence de voyage de luxe basée à Dakar, Sénégal. Le site présente les services premium de l'agence avec un système de réservation intégré et un design élégant.
 
-## Deployment
+### ✨ Fonctionnalités principales
 
-Your project is live at:
+- 🎨 **Design moderne et responsive** avec Tailwind CSS
+- 📱 **Interface mobile-first** optimisée
+- ✈️ **Système de réservation** avec formulaire modal
+- 📧 **Envoi d'emails automatique** via EmailJS
+- 🖼️ **Gestion d'images** optimisée
+- 🔐 **Configuration sécurisée** avec variables d'environnement
 
-**[https://vercel.com/njo2022s-projects/v0-travel-agency-landing-page](https://vercel.com/njo2022s-projects/v0-travel-agency-landing-page)**
+## 🛠️ Stack technologique
 
-## Build your app
+- **Next.js 14** - Framework React avec App Router
+- **TypeScript** - Langage de programmation typé
+- **Tailwind CSS** - Framework CSS utility-first
+- **shadcn/ui** - Composants UI modernes
+- **EmailJS** - Service d'envoi d'emails
+- **Vercel** - Plateforme de déploiement
 
-Continue building your app on:
+## 🚀 Installation et lancement
 
-**[https://v0.app/chat/projects/DFWFTMSzDod](https://v0.app/chat/projects/DFWFTMSzDod)**
+### Prérequis
+- Node.js 18+
+- npm ou pnpm
 
-## How It Works
+### Installation
+```bash
+# Cloner le repository
+git clone https://github.com/VOTRE_USERNAME/elite-voyages-landing-page.git
+cd elite-voyages-landing-page
 
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+# Installer les dépendances
+npm install
+
+# Copier la configuration d'environnement
+cp env.example .env.local
+
+# Éditer les variables d'environnement
+nano .env.local
+```
+
+### Lancement
+```bash
+# Serveur de développement
+npm run dev
+
+# Build de production
+npm run build
+npm start
+```
+
+## 📧 Configuration EmailJS
+
+1. **Créer un compte** sur [EmailJS](https://www.emailjs.com/)
+2. **Configurer les variables** dans `.env.local`
+3. **Créer les templates** d'emails dans EmailJS
+4. **Tester** l'envoi d'emails
+
+## 📚 Documentation
+
+- **[Guide Complet](GUIDE_COMPLET.md)** - Documentation détaillée du projet
+- **[Configuration](CONFIGURATION.md)** - Guide de configuration sécurisée
+- **[Templates EmailJS](templates/)** - Templates d'emails professionnels
+
+## 🎨 Sections du site
+
+- **🏠 Hero** - Section d'accueil avec image de fond
+- **👥 À propos** - Présentation de l'agence et de l'équipe
+- **🛎️ Services** - Services premium avec images
+- **📞 Contact** - Formulaire de contact et informations
+
+## 🔐 Sécurité
+
+- ✅ Variables d'environnement sécurisées
+- ✅ Clés EmailJS non exposées dans le code
+- ✅ Configuration centralisée et maintenable
+- ✅ Fichiers sensibles dans .gitignore
+
+## 🚀 Déploiement
+
+Le projet est déployé automatiquement sur Vercel :
+- **URL de production** : [https://vercel.com/njo2022s-projects/v0-travel-agency-landing-page](https://vercel.com/njo2022s-projects/v0-travel-agency-landing-page)
+- **Déploiement automatique** à chaque push sur main
+- **Variables d'environnement** configurées sur Vercel
+
+## 📞 Support
+
+- **Email** : dakcarsbcenter@gmail.com
+- **Téléphone** : +221 77 123 45 67
+- **Adresse** : Dakar, Sénégal
+
+## 📄 Licence
+
+Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
+
+---
+
+**Développé avec ❤️ pour Élite Voyages** ✈️
 
 ##  Lancer le projet
 
