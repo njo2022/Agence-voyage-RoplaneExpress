@@ -114,10 +114,7 @@ export default function LuxuryTravelAgency() {
       <nav className="fixed top-0 w-full bg-background/95 backdrop-blur-sm border-b border-border z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="bg-accent p-2 rounded-lg">
-              <Plane className="h-6 w-6 text-accent-foreground" />
-            </div>
-            <span className="text-2xl font-bold text-foreground">Élite Voyages</span>
+            <img src="/Logo ROPLAN-EXPress.jpg" alt="Roplane Express Logo" height={10} />
           </div>
 
           {/* Desktop Navigation */}
@@ -482,20 +479,20 @@ export default function LuxuryTravelAgency() {
                     {
                       icon: <Mail className="h-6 w-6 text-accent" />,
                       title: "Email",
-                      content: "contact@elitevoyages.fr",
+                      content: "adasarr03@gmail.com",
                       subtitle: "Réponse sous 2h en moyenne",
                     },
                     {
                       icon: <Phone className="h-6 w-6 text-accent" />,
                       title: "Téléphone",
-                      content: "+33 1 42 86 95 73",
+                      content: "78 131 91 91 / 78 688 91 91",
                       subtitle: "Lun-Ven 9h-19h, Sam 10h-16h",
                     },
                     {
                       icon: <MapPin className="h-6 w-6 text-accent" />,
                       title: "Adresse",
                       content: "Dakar - Sénégal",
-                      subtitle: "75008 Dakar, Sénégal",
+                      subtitle: "Nord Foire, Cité BCEAO, Route de Yoff",
                     },
                     {
                       icon: <Clock className="h-6 w-6 text-accent" />,
