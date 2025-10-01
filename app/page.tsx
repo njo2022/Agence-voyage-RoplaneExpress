@@ -1,12 +1,17 @@
 "use client"
 
 import { useState } from "react"
+
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
 import emailjs from '@emailjs/browser'
 import { emailConfig } from '../lib/email-config'
 import { Button } from "../components/ui/button"
 import { Card, CardContent } from "../components/ui/card"
 import { Input } from "../components/ui/input"
 import { Badge } from "../components/ui/badge"
+import Map from "../components/map"
+import Chat from "../components/chat"
 import {
   MapPin,
   Users,
@@ -114,7 +119,10 @@ export default function LuxuryTravelAgency() {
       <nav className="fixed top-0 w-full bg-background/95 backdrop-blur-sm border-b border-border z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <img src="/Logo ROPLAN-EXPress.jpg" alt="Roplane Express Logo" height={10} />
+            <div className="bg-accent p-2 rounded-lg">
+              <Plane className="h-6 w-6 text-accent-foreground" />
+            </div>
+            <span className="text-2xl font-bold text-foreground">Roplane Express</span>
           </div>
 
           {/* Desktop Navigation */}
@@ -474,6 +482,12 @@ export default function LuxuryTravelAgency() {
             <div className="space-y-12">
               <div>
                 <h3 className="text-3xl font-bold text-foreground mb-8">Nos Coordonnées</h3>
+                
+                {/* Carte interactive */}
+                <div className="mb-8">
+                  <h4 className="text-xl font-semibold text-foreground mb-4">Notre Localisation</h4>
+                  <Map className="w-full" />
+                </div>
                 <div className="space-y-6">
                   {[
                     {
@@ -525,7 +539,7 @@ export default function LuxuryTravelAgency() {
                 <div className="bg-accent p-2 rounded-lg">
                   <Plane className="h-6 w-6 text-accent-foreground" />
                 </div>
-                <span className="text-3xl font-bold">Élite Voyages</span>
+                <span className="text-3xl font-bold">Roplane Express</span>
               </div>
               <p className="text-primary-foreground/80 mb-6 text-lg leading-relaxed">
                 Votre partenaire de confiance pour des voyages d'exception depuis 2009. Nous transformons vos rêves de
@@ -599,7 +613,7 @@ export default function LuxuryTravelAgency() {
 
           <div className="border-t border-primary-foreground/20 mt-12 pt-8 text-center text-primary-foreground/60">
             <p>
-              &copy; 2024 Élite Voyages. Tous droits réservés. | Conditions Générales | Politique de Confidentialité
+              &copy; 2025 Roplane Express. Tous droits réservés. | Conditions Générales | Politique de Confidentialité
             </p>
           </div>
         </div>
@@ -779,6 +793,9 @@ export default function LuxuryTravelAgency() {
           </div>
         </div>
       )}
+
+      {/* Chat Widget */}
+      <Chat />
     </div>
   )
 }
