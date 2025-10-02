@@ -11,7 +11,7 @@ import { Card, CardContent } from "../components/ui/card"
 import { Input } from "../components/ui/input"
 import { Badge } from "../components/ui/badge"
 import Map from "../components/map"
-import Chat from "../components/chat"
+import TawkChat from "../components/tawk-chat"
 import {
   MapPin,
   Users,
@@ -29,6 +29,10 @@ import {
   Heart,
   Menu,
   X,
+  Facebook,
+  Instagram,
+  Linkedin,
+  Music,
 } from "lucide-react"
 
 export default function LuxuryTravelAgency() {
@@ -145,6 +149,46 @@ export default function LuxuryTravelAgency() {
                 {item.label}
               </button>
             ))}
+            
+            {/* Social Media Icons */}
+            <div className="flex items-center space-x-3 ml-6 pl-6 border-l border-border">
+              <a 
+                href="https://www.facebook.com/share/19oEV1sKdA/?mibextid=wwXIfr" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="p-2 rounded-lg hover:bg-accent/10 transition-colors"
+                title="Facebook"
+              >
+                <Facebook className="h-5 w-5 text-foreground hover:text-accent" />
+              </a>
+              <a 
+                href="https://instagram.com/roplaneexpress" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="p-2 rounded-lg hover:bg-accent/10 transition-colors"
+                title="Instagram"
+              >
+                <Instagram className="h-5 w-5 text-foreground hover:text-accent" />
+              </a>
+              <a 
+                href="https://tiktok.com/@roplane_express" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="p-2 rounded-lg hover:bg-accent/10 transition-colors"
+                title="TikTok"
+              >
+                <Music className="h-5 w-5 text-foreground hover:text-accent" />
+              </a>
+              <a 
+                href="https://sn.linkedin.com/in/roplane-express-13b39a249" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="p-2 rounded-lg hover:bg-accent/10 transition-colors"
+                title="LinkedIn"
+              >
+                <Linkedin className="h-5 w-5 text-foreground hover:text-accent" />
+              </a>
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
@@ -178,6 +222,47 @@ export default function LuxuryTravelAgency() {
                   {item.label}
                 </button>
               ))}
+              
+              {/* Social Media Icons for Mobile */}
+              <div className="flex justify-center space-x-6 py-4 border-t border-border">
+                <a 
+                  href="https://www.facebook.com/share/19oEV1sKdA/?mibextid=wwXIfr"
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="p-3 rounded-lg hover:bg-accent/10 transition-colors"
+                  title="Facebook"
+                >
+                  <Facebook className="h-6 w-6 text-foreground hover:text-accent" />
+                </a>
+                <a 
+                  href="https://www.instagram.com/roplaneexpress?utm_source=qr&igsh=MXdjaTB4czBqNWdoag==" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="p-3 rounded-lg hover:bg-accent/10 transition-colors"
+                  title="Instagram"
+                >
+                  <Instagram className="h-6 w-6 text-foreground hover:text-accent" />
+                </a>
+                <a 
+                  href="https://tiktok.com/@roplaneexpress" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="p-3 rounded-lg hover:bg-accent/10 transition-colors"
+                  title="TikTok"
+                >
+                  <Music className="h-6 w-6 text-foreground hover:text-accent" />
+                </a>
+                <a 
+                  href="https://sn.linkedin.com/in/roplane-express-13b39a249" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="p-3 rounded-lg hover:bg-accent/10 transition-colors"
+                  title="LinkedIn"
+                >
+                  <Linkedin className="h-6 w-6 text-foreground hover:text-accent" />
+                </a>
+              </div>
+              
               <Button 
                 className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
                 onClick={() => setReservationOpen(true)}
@@ -193,15 +278,15 @@ export default function LuxuryTravelAgency() {
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: `url('/a-beach-with-a-hut-on-it.jpg')`,
+            backgroundImage: `url('/jolie-plage-avec-une-hute.webp')`,
           }}
         >
           <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-black/30" />
         </div>
         <div className="relative z-10 text-center text-white max-w-5xl mx-auto px-4">
-          <h1 className="text-6xl md:text-8xl font-bold mb-8 text-balance leading-tight">Voyages d'Exception</h1>
+          <h1 className="text-6xl md:text-8xl font-bold mb-8 text-balance leading-tight">Voyages d'Exception au Sénégal - Roplane Express Dakar</h1>
           <p className="text-2xl md:text-3xl mb-12 text-pretty opacity-95 font-light">
-            Découvrez le monde avec l'élégance et le raffinement que vous méritez
+            Découvrez l'Afrique avec l'élégance et le raffinement que vous méritez. Agence de voyage à Dakar depuis 2009.
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <Button
@@ -227,14 +312,14 @@ export default function LuxuryTravelAgency() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="text-5xl md:text-6xl font-bold text-foreground mb-8">Notre Histoire</h2>
+              <h2 className="text-5xl md:text-6xl font-bold text-foreground mb-8">À Propos de Roplane Express - Agence de Voyage Dakar</h2>
               <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-                Depuis plus de 15 ans, Élite Voyages redéfinit l'art du voyage de luxe. Nous créons des expériences sur
+                Depuis 2009, Roplane Express est votre agence de voyage de confiance à Dakar, spécialisée dans le tourisme au Sénégal et en Afrique. Nous créons des expériences sur
                 mesure qui dépassent vos attentes les plus élevées.
               </p>
               <p className="text-lg text-muted-foreground mb-12 leading-relaxed">
-                Notre équipe d'experts passionnés parcourt le monde pour dénicher les destinations les plus exclusives
-                et les expériences les plus authentiques, garantissant à chaque client un voyage inoubliable.
+                Notre équipe d'experts passionnés en voyage sur mesure parcourt l'Afrique pour dénicher les destinations les plus exclusives
+                du Sénégal et de l'Afrique de l'Ouest, garantissant à chaque client un voyage inoubliable avec notre service VIP.
               </p>
 
               <div className="grid grid-cols-2 gap-8">
@@ -251,9 +336,10 @@ export default function LuxuryTravelAgency() {
 
             <div className="relative">
               <img
-                src="livre-histoire-de-voyage-avec-agence-de-voyage.jpg"
-                alt="Notre équipe"
+                src="livre-histoire-de-voyage-avec-agence-de-voyage.webp"
+                alt="Équipe professionnelle Roplane Express - Consultants voyage Dakar Sénégal"
                 className="w-full h-[600px] object-cover rounded-2xl shadow-2xl"
+                loading="lazy"
               />
               <div className="absolute -bottom-8 -left-8 bg-accent text-accent-foreground p-8 rounded-2xl">
                 <Award className="h-12 w-12 mb-4" />
@@ -265,7 +351,7 @@ export default function LuxuryTravelAgency() {
 
           {/* Team Values */}
           <div className="mt-24">
-            <h3 className="text-4xl font-bold text-center text-foreground mb-16">Nos Valeurs</h3>
+            <h3 className="text-4xl font-bold text-center text-foreground mb-16">Nos Valeurs - Excellence en Tourisme Sénégal</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
               {[
                 {
@@ -304,9 +390,9 @@ export default function LuxuryTravelAgency() {
       <section id="services" className="py-24 bg-muted">
         <div className="container mx-auto px-4">
           <div className="text-center mb-20">
-            <h2 className="text-5xl md:text-6xl font-bold text-foreground mb-8">Nos Services</h2>
+            <h2 className="text-5xl md:text-6xl font-bold text-foreground mb-8">Nos Services de Voyage Sur Mesure au Sénégal</h2>
             <p className="text-2xl text-muted-foreground max-w-3xl mx-auto">
-              Des expériences sur mesure conçues pour les voyageurs les plus exigeants
+              Des expériences de voyage sur mesure au Sénégal conçues pour les voyageurs les plus exigeants. Réservation voyage personnalisée avec guide touristique expert.
             </p>
           </div>
 
@@ -324,7 +410,7 @@ export default function LuxuryTravelAgency() {
                 title: "Expériences VIP",
                 description: "Accès privilégié aux événements exclusifs et aux lieux les plus prestigieux.",
                 image: "VIP access to exclusive cultural event with private guide and champagne service",
-                features: ["Accès privé", "Guide expert", "Transport de luxe"],
+                features: ["Accès privé", "Guide expert", "Transport"],
                 
               },
             ].map((service, index) => (
@@ -336,11 +422,16 @@ export default function LuxuryTravelAgency() {
                   <img
                     src={
                       index === 0
-                        ? "/Voyage-sur-mesure.JPG"
-                        : "/chauffeur-et-client-heureux.jpg"
+                        ? "/Voyage-sur-mesure.webp"
+                        : "/chauffeur-et-client-heureux.webp"
                     }
-                    alt={service.title}
+                    alt={
+                      index === 0
+                        ? "Voyage sur mesure personnalisé Sénégal - Roplane Express agence de voyage Dakar"
+                        : "Expérience VIP chauffeur privé Dakar - Service premium Roplane Express Sénégal"
+                    }
                     className="w-full h-full object-cover"
+                    loading="lazy"
                   />
                   <div className="absolute top-6 right-6">
                     <Badge className="bg-accent text-accent-foreground text-lg px-4 py-2">Premium</Badge>
@@ -360,7 +451,7 @@ export default function LuxuryTravelAgency() {
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold text-accent">{service.price}</span>
+                    <span className="text-2xl font-bold text-accent">Sur devis</span>
                     <Button 
                       className="bg-primary text-primary-foreground hover:bg-primary/90 px-8"
                       onClick={() => scrollToSection("contact")}
@@ -378,13 +469,13 @@ export default function LuxuryTravelAgency() {
             {[
               {
                 icon: <Mountain className="h-12 w-12 text-accent" />,
-                title: "Aventure de Luxe",
+                title: "Aventure",
                 description: "Expéditions exclusives dans les destinations les plus spectaculaires",
               },
               {
                 icon: <Waves className="h-12 w-12 text-accent" />,
                 title: "Croisières Privées",
-                description: "Yachts de luxe et croisières sur mesure dans les plus belles eaux",
+                description: "Yachts et croisières sur mesure dans les plus belles eaux",
               },
               {
                 icon: <Camera className="h-12 w-12 text-accent" />,
@@ -417,7 +508,7 @@ export default function LuxuryTravelAgency() {
       <section id="contact" className="py-24 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-20">
-            <h2 className="text-5xl md:text-6xl font-bold text-foreground mb-8">Contactez-Nous</h2>
+            <h2 className="text-5xl md:text-6xl font-bold text-foreground mb-8">Contactez Roplane Express - Agence Voyage Dakar</h2>
             <p className="text-2xl text-muted-foreground max-w-3xl mx-auto">
               Prêt à vivre l'expérience de voyage de vos rêves ? Parlons-en ensemble.
             </p>
@@ -546,15 +637,38 @@ export default function LuxuryTravelAgency() {
                 voyage en réalités inoubliables.
               </p>
               <div className="flex space-x-4">
-                <div className="bg-primary-foreground/10 p-3 rounded-lg">
-                  <Award className="h-6 w-6 text-primary-foreground" />
-                </div>
-                <div className="bg-primary-foreground/10 p-3 rounded-lg">
-                  <Shield className="h-6 w-6 text-primary-foreground" />
-                </div>
-                <div className="bg-primary-foreground/10 p-3 rounded-lg">
-                  <Globe className="h-6 w-6 text-primary-foreground" />
-                </div>
+                <a 
+                  href="https://www.facebook.com/share/19oEV1sKdA/?mibextid=wwXIfr" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="bg-primary-foreground/10 p-3 rounded-lg hover:bg-accent/20 transition-colors"
+                >
+                  <Facebook className="h-6 w-6 text-primary-foreground hover:text-accent" />
+                </a>
+                <a 
+                  href="https://instagram.com/roplaneexpress" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="bg-primary-foreground/10 p-3 rounded-lg hover:bg-accent/20 transition-colors"
+                >
+                  <Instagram className="h-6 w-6 text-primary-foreground hover:text-accent" />
+                </a>
+                <a 
+                  href="https://tiktok.com/@roplane_express"
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="bg-primary-foreground/10 p-3 rounded-lg hover:bg-accent/20 transition-colors"
+                >
+                  <Music className="h-6 w-6 text-primary-foreground hover:text-accent" />
+                </a>
+                <a 
+                  href="https://sn.linkedin.com/in/roplane-express-13b39a249"
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="bg-primary-foreground/10 p-3 rounded-lg hover:bg-accent/20 transition-colors"
+                >
+                  <Linkedin className="h-6 w-6 text-primary-foreground hover:text-accent" />
+                </a>
               </div>
             </div>
 
@@ -589,7 +703,7 @@ export default function LuxuryTravelAgency() {
               <ul className="space-y-3 text-primary-foreground/80">
                 <li>
                   <a href="#" className="hover:text-accent transition-colors">
-                    Europe de Luxe
+                    Europe
                   </a>
                 </li>
                 <li>
@@ -794,8 +908,8 @@ export default function LuxuryTravelAgency() {
         </div>
       )}
 
-      {/* Chat Widget */}
-      <Chat />
+      {/* Chat Widget - Tawk.to */}
+      <TawkChat />
     </div>
   )
 }
