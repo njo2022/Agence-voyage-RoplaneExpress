@@ -1,13 +1,9 @@
 
-# ✈️ Élite Voyages - Landing Page
-
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/njo2022s-projects/v0-travel-agency-landing-page)
-[![Built with Next.js](https://img.shields.io/badge/Built%20with-Next.js-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
-[![Styled with Tailwind](https://img.shields.io/badge/Styled%20with-Tailwind%20CSS-blue?style=for-the-badge&logo=tailwindcss)](https://tailwindcss.com/)
+# ✈️ Roplane Express - Landing Page
 
 ## 🎯 Vue d'ensemble
 
-**Élite Voyages** est une landing page moderne pour une agence de voyage de luxe basée à Dakar, Sénégal. Le site présente les services premium de l'agence avec un système de réservation intégré et un design élégant.
+**Roplane Express** est une landing page moderne pour une agence de voyage de luxe basée à Dakar, Sénégal. Le site présente les services premium de l'agence avec un système de réservation intégré et un design élégant.
 
 ### ✨ Fonctionnalités principales
 
@@ -25,7 +21,7 @@
 - **Tailwind CSS** - Framework CSS utility-first
 - **shadcn/ui** - Composants UI modernes
 - **EmailJS** - Service d'envoi d'emails
-- **Vercel** - Plateforme de déploiement
+- **Netlify** - Plateforme de déploiement
 
 ## 🚀 Installation et lancement
 
@@ -36,8 +32,8 @@
 ### Installation
 ```bash
 # Cloner le repository
-git clone https://github.com/VOTRE_USERNAME/elite-voyages-landing-page.git
-cd elite-voyages-landing-page
+git clone https://github.com/VOTRE_USERNAME/Agence-voyage-RoplaneExpress.git
+cd Agence-voyage-RoplaneExpress
 
 # Installer les dépendances
 npm install
@@ -96,7 +92,7 @@ Le projet est déployé automatiquement sur Vercel :
 ## 📞 Support
 
 - **Email** : dakcarsbcenter@gmail.com
-- **Téléphone** : +221 77 123 45 67
+- **Téléphone** : +221 77 401 08 90
 - **Adresse** : Dakar, Sénégal
 
 ## 📄 Licence
@@ -105,13 +101,13 @@ Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de 
 
 ---
 
-**Développé avec ❤️ pour Élite Voyages** ✈️
+**Développé avec ❤️ pour Roplane Express** ✈️
 
 ##  Lancer le projet
 
 ### **1. Installer les dépendances (si pas encore fait)**
 ```bash
-pnpm install
+npm install
 ```
 
 ### **2. Lancer le serveur de développement**
@@ -129,16 +125,16 @@ Une fois le serveur lancé, ouvrez votre navigateur et allez sur `http://localho
 En regardant le code, voici les **sections principales avec des images** que vous pourrez voir :
 
 ### **1. Section Hero (Accueil)**
-- **Image de fond** : `luxury-tropical-resort-with-overwater-bungalows.jpg`
+- **Image de fond** : `jolie-plage-avec-une-hute.webp`
 - **Position** : Arrière-plan de la section principale
 
 ### **2. Section "À propos"**
-- **Image de l'équipe** : `professional-travel-consultants-luxury-office.jpg`
+- **Image de l'équipe** : `professional-travel-consultants-luxury-office.webp`
 - **Position** : Côté droit de la section "Notre Histoire"
 
 ### **3. Section "Services"**
-- **Service 1** : `custom-travel-planning-luxury-materials.jpg`
-- **Service 2** : `vip-exclusive-cultural-experience.jpg`
+- **Service 1** : `custom-travel-planning-luxury-materials.webp`
+- **Service 2** : `vip-exclusive-cultural-experience.webp`
 - **Position** : Cartes des services premium
 
 ### **4. Images disponibles mais non utilisées**
@@ -151,7 +147,7 @@ Vous avez aussi ces images dans le dossier `public` qui ne sont pas encore utili
 
 ##  Prochaines étapes
 
-1. **Lancez le projet** avec `pnpm dev`
+1. **Lancez le projet** avec `npm run dev`
 2. **Explorez le site** dans votre navigateur
 3. **Identifiez** quelles images vous voulez changer
 4. **Dites-moi** quelles sections vous souhaitez modifier
