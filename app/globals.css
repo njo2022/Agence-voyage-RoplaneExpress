@@ -124,3 +124,199 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Scrollbar personnalisée premium */
+.custom-scrollbar-premium {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(99, 102, 241, 0.3) transparent;
+}
+
+.custom-scrollbar-premium::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar-premium::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar-premium::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.4), rgba(168, 85, 247, 0.4));
+  border-radius: 20px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+  transition: all 0.3s ease;
+}
+
+.custom-scrollbar-premium::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.6), rgba(168, 85, 247, 0.6));
+  background-clip: content-box;
+}
+
+/* Animations premium pour la modale */
+@keyframes slide-in-from-bottom-8 {
+  from {
+    transform: translateY(200px) scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes zoom-in {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-from-top-4 {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(99, 102, 241, 0.6);
+  }
+}
+
+.slide-in-from-bottom-8 {
+  animation: slide-in-from-bottom-8 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.zoom-in {
+  animation: zoom-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.slide-in-from-top-4 {
+  animation: slide-in-from-top-4 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Floating labels effect */
+.floating-label-input:focus ~ label,
+.floating-label-input:not(:placeholder-shown) ~ label {
+  transform: translateY(-1.5rem) scale(0.8);
+  color: rgb(99, 102, 241);
+}
+
+/* Glassmorphism effects */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Premium button hover effects */
+.btn-premium-hover {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-premium-hover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-premium-hover:hover::before {
+  left: 100%;
+}
+
+/* Section cards hover effects */
+.section-card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.section-card-hover:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+}
+
+/* Input focus effects premium */
+.input-premium-focus {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.input-premium-focus:focus {
+  transform: scale(1.02);
+  box-shadow: 0 8px 32px rgba(99, 102, 241, 0.2);
+}
+
+/* Gradient text animations */
+.gradient-text-animate {
+  background: linear-gradient(-45deg, #6366f1, #a855f7, #ec4899, #06b6d4);
+  background-size: 400% 400%;
+  animation: gradient 4s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Decorative elements animations */
+.decorative-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.decorative-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Custom dropdown arrows */
+.custom-select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+}
+
+/* Enhanced shadows */
+.shadow-3xl {
+  box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.25);
+}
+
+.shadow-inner-glow {
+  box-shadow: inset 0 2px 4px 0 rgba(255, 255, 255, 0.06);
+}
