@@ -1,7 +1,20 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+/* Removed unsupported at-rule '@custom-variant' from CSS because it's not recognized by the PostCSS/Tailwind pipeline.
+   To add a custom 'dark' variant, define it in tailwind.config.js using the plugin API, for example:
+
+   // tailwind.config.js
+   // module.exports = {
+   //   plugins: [
+   //     function({ addVariant }) {
+   //       addVariant('dark', '&:is(.dark *)');
+   //     }
+   //   ]
+   // }
+
+   Keeping this CSS free of unknown at-rules prevents the compile error.
+*/
 
 :root {
   /* Updated color palette for luxury travel agency inspired by top agencies */
@@ -118,10 +131,12 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    border-color: var(--color-border);
+    outline-color: rgb(from var(--color-ring) r g b / 0.5);
   }
   body {
-    @apply bg-background text-foreground;
+    background-color: var(--color-background);
+    color: var(--color-foreground);
   }
 }
 
