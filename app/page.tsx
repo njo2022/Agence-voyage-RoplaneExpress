@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
+import useEmblaCarousel from 'embla-carousel-react'
 
 // Force dynamic rendering
 export const dynamic = 'force-dynamic'
@@ -11,7 +12,6 @@ import { Card, CardContent } from "../components/ui/card"
 import { Input } from "../components/ui/input"
 import { Badge } from "../components/ui/badge"
 import Map from "../components/map"
-import TawkChat from "../components/tawk-chat"
 import JsonLdScript from "../components/json-ld"
 import {
   MapPin,
@@ -34,7 +34,156 @@ import {
   Instagram,
   Linkedin,
   Music,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react"
+
+// Composant Carrousel des Destinations
+function DestinationsCarousel() {
+  const [emblaRef, emblaApi] = useEmblaCarousel({ 
+    loop: true,
+    align: 'start',
+    slidesToScroll: 1,
+  })
+
+  const scrollPrev = useCallback(() => {
+    if (emblaApi) emblaApi.scrollPrev()
+  }, [emblaApi])
+
+  const scrollNext = useCallback(() => {
+    if (emblaApi) emblaApi.scrollNext()
+  }, [emblaApi])
+
+  // Données des destinations - facile à étendre
+  const destinations = [
+    {
+      id: 1,
+      title: "Chine",
+      description: "7 jours • Vol inclus",
+      image: "/visiter-chine.webp",
+      alt: "CHINE - Voyage organisé",
+      badge: "Populaire",
+      badgeColor: "bg-green-500"
+    },
+    {
+      id: 2,
+      title: "Paris, France",
+      description: "3 jours • Hotel 5*",
+      image: "/paris.webp",
+      alt: "Paris, France - Tour Eiffel",
+      badge: null,
+      badgeColor: ""
+    },
+    {
+      id: 3,
+      title: "Abidjan, Côte d'Ivoire",
+      description: "10 jours • Circuit découverte",
+      image: "/cote-d_ivoire.webp",
+      alt: "Abidjan, Côte d'Ivoire - zone touristique",
+      badge: null,
+      badgeColor: ""
+    },
+    {
+      id: 4,
+      title: "Dubai, EAU",
+      description: "5 jours • Luxe & Shopping",
+      image: "/dubai-tourisme-dramadaire.webp",
+      alt: "Dubai - Ville moderne",
+      badge: "Nouveauté",
+      badgeColor: "bg-blue-500"
+    },
+    {
+      id: 5,
+      title: "Tokyo, Japon",
+      description: "8 jours • Culture & Gastronomie",
+      image: "/Rwanda-Cultural-Tourism.webp",
+      alt: "Tokyo, Japon - Tradition et modernité",
+      badge: null,
+      badgeColor: ""
+    },
+    {
+      id: 6,
+      title: "New York, USA",
+      description: "6 jours • Ville qui ne dort jamais",
+      image: "/new-york-touriste.webp",
+      alt: "New York - Big Apple",
+      badge: "Tendance",
+      badgeColor: "bg-purple-500"
+    }
+  ]
+
+  return (
+    <div className="relative">
+      {/* Boutons de navigation */}
+      <div className="absolute -top-20 right-0 flex gap-2 z-10">
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={scrollPrev}
+          className="h-12 w-12 rounded-full border-2 hover:bg-blue-50"
+        >
+          <ChevronLeft className="h-6 w-6" />
+        </Button>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={scrollNext}
+          className="h-12 w-12 rounded-full border-2 hover:bg-blue-50"
+        >
+          <ChevronRight className="h-6 w-6" />
+        </Button>
+      </div>
+
+      {/* Carrousel */}
+      <div className="overflow-hidden" ref={emblaRef}>
+        <div className="flex gap-6">
+          {destinations.map((destination) => (
+            <div key={destination.id} className="flex-[0_0_100%] md:flex-[0_0_48%] lg:flex-[0_0_32%] min-w-0">
+              <Card className="overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-300 group h-full">
+                <div className="relative h-80 overflow-hidden">
+                  <img
+                    src={destination.image}
+                    alt={destination.alt}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                  {destination.badge && (
+                    <div className="absolute top-4 right-4">
+                      <Badge className={`${destination.badgeColor} text-white px-3 py-1`}>
+                        {destination.badge}
+                      </Badge>
+                    </div>
+                  )}
+                </div>
+                <CardContent className="p-6">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{destination.title}</h3>
+                  <p className="text-gray-600 mb-4">{destination.description}</p>
+                  <div className="flex justify-between items-center">
+                    <span className="text-xl font-semibold text-blue-600">Sur devis</span>
+                    <Button className="bg-blue-600 text-white hover:bg-blue-700">
+                      Réserver
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Indicateurs de points (optionnel) */}
+      <div className="flex justify-center gap-2 mt-8">
+        {destinations.map((_, index) => (
+          <button
+            key={index}
+            className="w-2 h-2 rounded-full bg-gray-300 hover:bg-blue-600 transition-colors"
+            onClick={() => emblaApi?.scrollTo(index)}
+          />
+        ))}
+      </div>
+    </div>
+  )
+}
 
 export default function LuxuryTravelAgency() {
   const [activeSection, setActiveSection] = useState("accueil")
@@ -461,36 +610,152 @@ export default function LuxuryTravelAgency() {
         )}
       </nav>
 
-      <section id="accueil" className="relative h-screen flex items-center justify-center overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `url('/jolie-plage-avec-une-hute.webp')`,
-          }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-black/30" />
+      <section id="accueil" className="relative py-12 sm:py-16 lg:pt-20 xl:pb-0">
+        <div className="relative px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
+          <div className="max-w-3xl mx-auto text-center">
+            
+            <h1 className="mt-5 text-4xl font-bold leading-tight text-gray-900 sm:text-5xl sm:leading-tight lg:text-6xl lg:leading-tight font-pj">
+              Explorez le Monde <span className="text-blue-600">Autrement</span>
+            </h1>
+            <p className="max-w-md mx-auto mt-6 text-base leading-7 text-gray-600 font-inter">
+              Une nouvelle façon de voyager. Découvrez des destinations inoubliables, loin des sentiers battus avec notre expertise.
+            </p>
+
+            <div className="relative inline-flex mt-10 group">
+              <div className="absolute transition-all duration-1000 opacity-70 -inset-px bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-1 group-hover:duration-200"></div>
+
+              <Button
+                onClick={() => {
+                  const element = document.querySelector('.py-20.bg-white');
+                  if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+                className="relative inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white transition-all duration-200 bg-gray-900 font-pj rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+              >
+                Découvrir nos destinations
+              </Button>
+            </div>
+          </div>
         </div>
-        <div className="relative z-10 text-center text-white max-w-5xl mx-auto px-4">
-          <h1 className="text-6xl md:text-8xl font-bold mb-8 text-balance leading-tight">Voyages d'Exception au Sénégal - Roplane Express Dakar</h1>
-          <p className="text-2xl md:text-3xl mb-12 text-pretty opacity-95 font-light">
-            Découvrez l'Afrique avec l'élégance et le raffinement que vous méritez. Agence de voyage à Dakar depuis 2009.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <Button
-              size="lg"
-              className="bg-accent text-accent-foreground hover:bg-accent/90 text-xl px-12 py-6 rounded-full"
-              onClick={() => scrollToSection("services")}
-            >
-              Découvrir nos Services
+
+        <div className="mt-16 md:mt-20 px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
+          <div className="relative group">
+            {/* Bordure avec effet de gradient animé */}
+            <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-tilt"></div>
+            
+            {/* Conteneur de l'image */}
+            <div className="relative bg-white rounded-2xl p-1">
+              <img 
+                className="object-cover object-top w-full h-auto rounded-xl shadow-2xl" 
+                src="/cap-skirring-casamance-senegal.webp" 
+                alt="Destinations de voyage Roplane Express" 
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Destinations Populaires Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-between items-center mb-12">
+            <div>
+              <p className="text-sm text-blue-600 font-semibold uppercase tracking-wide mb-2">INSPIRATION</p>
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900">Destinations Populaires</h2>
+            </div>
+            <Button variant="ghost" className="text-gray-700 hover:text-blue-600 flex items-center gap-2">
+              Voir tout
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
             </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-2 border-white text-white hover:bg-white hover:text-foreground text-xl px-12 py-6 rounded-full bg-transparent"
-              onClick={() => scrollToSection("contact")}
-            >
-              Planifier mon Voyage
-            </Button>
+          </div>
+
+          {/* Carrousel */}
+          <DestinationsCarousel />
+        </div>
+      </section>
+
+      {/* Section Voyagez sans contraintes */}
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            {/* Image avec design moderne */}
+            <div className="relative">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+                <img
+                  src="/rwanda.jpg"
+                  alt="Montgolfières au coucher du soleil - Voyagez librement"
+                  className="w-full h-[500px] object-cover"
+                  loading="lazy"
+                />
+                <div className="absolute bottom-6 left-6 bg-white/90 backdrop-blur-sm px-6 py-4 rounded-2xl shadow-lg">
+                  <p className="text-gray-800 font-medium text-lg">
+                    "Une expérience client inoubliable, nos experts passionnés vous accompagnent"
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Contenu */}
+            <div>
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">
+                Voyagez sans contraintes
+              </h2>
+              <p className="text-xl text-gray-600 mb-10 leading-relaxed">
+                Nous nous occupons de tout pour que vous n'ayez qu'à profiter. De la réservation des vols aux expériences locales exclusives, votre confort est notre priorité absolue.
+              </p>
+
+              <div className="space-y-6">
+                {[
+                  {
+                    icon: (
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    ),
+                    text: "Assistance 24/7 partout dans le monde",
+                  },
+                  {
+                    icon: (
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    ),
+                    text: "Remboursement flexible et tarifs négociés",
+                  },
+                  {
+                    icon: (
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    ),
+                    text: "Itinéraires personnalisés sur mesure",
+                  },
+                ].map((item, index) => (
+                  <div key={index} className="flex items-center gap-4">
+                    <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                      {item.icon}
+                    </div>
+                    <p className="text-lg text-gray-700 font-medium">{item.text}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-10">
+                <Button 
+                  size="lg"
+                  className="bg-blue-600 text-white hover:bg-blue-700 text-lg px-10 py-6 rounded-xl flex items-center gap-3"
+                  onClick={() => scrollToSection("contact")}
+                >
+                  En savoir plus
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -570,6 +835,93 @@ export default function LuxuryTravelAgency() {
                 </Card>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Section Témoignages - Ce qu'ils en disent */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Ce qu'ils en disent</h2>
+            <p className="text-xl text-gray-600">Des milliers de voyageurs nous font confiance pour leurs aventures</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Témoignage 1 - Sophie Ndiaye */}
+            <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 p-8">
+              <CardContent className="p-0">
+                <div className="flex items-start gap-1 mb-6">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <svg key={star} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                      <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+                    </svg>
+                  ))}
+                </div>
+                <p className="text-gray-700 mb-6 leading-relaxed italic">
+                  "L'organisation était impeccable. J'ai pu découvrir des endroits secrets que je n'aurais jamais trouvés seul. Équipe très professionnelle."
+                </p>
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span className="text-blue-600 font-bold text-lg">SN</span>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-gray-900">Sophie Ndiaye</h4>
+                    <p className="text-sm text-gray-500">Voyage Saly, Sénégal</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Témoignage 2 - Thomas de Brek */}
+            <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 p-8">
+              <CardContent className="p-0">
+                <div className="flex items-start gap-1 mb-6">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <svg key={star} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                      <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+                    </svg>
+                  ))}
+                </div>
+                <p className="text-gray-700 mb-6 leading-relaxed italic">
+                  "Un service client exceptionnel. Ils ont géré un changement de vol de dernière minute avec une efficacité remarquable."
+                </p>
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                    <span className="text-green-600 font-bold text-lg">TB</span>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-gray-900">Thomas de Brek</h4>
+                    <p className="text-sm text-gray-500">Voyage New York</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Témoignage 3 - Aida Faye */}
+            <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 p-8">
+              <CardContent className="p-0">
+                <div className="flex items-start gap-1 mb-6">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <svg key={star} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                      <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+                    </svg>
+                  ))}
+                </div>
+                <p className="text-gray-700 mb-6 leading-relaxed italic">
+                  "Le meilleur investissement pour mes vacances. Tout était parfait, de l'hôtel au guide Vivalde."
+                </p>
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                    <span className="text-purple-600 font-bold text-lg">AF</span>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-gray-900">Aida Faye</h4>
+                    <p className="text-sm text-gray-500">Escapade Nice</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
@@ -1327,9 +1679,6 @@ export default function LuxuryTravelAgency() {
           </div>
         </div>
       )}
-
-      {/* Chat Widget - Tawk.to */}
-      <TawkChat />
 
       {/* Script JSON-LD pour le SEO */}
       <JsonLdScript />

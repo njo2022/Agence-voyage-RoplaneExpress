@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { GeistSans } from 'geist/font/sans'
 import { GeistMono } from 'geist/font/mono'
+import Script from 'next/script'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -64,8 +65,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" suppressHydrationWarning>
+      <head>
+        {/* Métadonnées uniquement dans le head */}
+      </head>
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
         {children}
+        
+        {/* Start of HubSpot Embed Code */}
+        <Script
+          id="hs-script-loader"
+          strategy="afterInteractive"
+          src="//js-eu1.hs-scripts.com/147415293.js"
+        />
+        {/* End of HubSpot Embed Code */}
       </body>
     </html>
   )
