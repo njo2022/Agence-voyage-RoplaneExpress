@@ -121,7 +121,7 @@ function DestinationsCarousel() {
           variant="outline"
           size="icon"
           onClick={scrollPrev}
-          className="min-h-[48px] min-w-[48px] h-12 w-12 rounded-full border-2 hover:bg-blue-50 touch-manipulation"
+          className="min-h-12 min-w-12 h-12 w-12 rounded-full border-2 hover:bg-blue-50 touch-manipulation"
           aria-label="Destination précédente"
         >
           <ChevronLeft className="h-6 w-6" aria-hidden="true" />
@@ -130,7 +130,7 @@ function DestinationsCarousel() {
           variant="outline"
           size="icon"
           onClick={scrollNext}
-          className="min-h-[48px] min-w-[48px] h-12 w-12 rounded-full border-2 hover:bg-blue-50 touch-manipulation"
+          className="min-h-12 min-w-12 h-12 w-12 rounded-full border-2 hover:bg-blue-50 touch-manipulation"
           aria-label="Destination suivante"
         >
           <ChevronRight className="h-6 w-6" aria-hidden="true" />
@@ -164,7 +164,7 @@ function DestinationsCarousel() {
                   <div className="flex justify-between items-center">
                     <span className="text-xl font-semibold text-blue-600">Sur devis</span>
                     <Button 
-                      className="bg-blue-600 text-white hover:bg-blue-700 min-w-[100px] min-h-[44px]"
+                      className="bg-blue-600 text-white hover:bg-blue-700 min-w-[100px] min-h-11"
                       aria-label={`Réserver un voyage à ${destination.title}`}
                     >
                       Réserver
@@ -182,7 +182,7 @@ function DestinationsCarousel() {
         {destinations.map((destination, index) => (
           <button
             key={index}
-            className="min-w-[48px] min-h-[48px] w-12 h-12 rounded-full bg-gray-400 hover:bg-blue-700 active:bg-blue-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 flex items-center justify-center touch-manipulation"
+            className="min-w-12 min-h-12 w-12 h-12 rounded-full bg-gray-400 hover:bg-blue-700 active:bg-blue-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 flex items-center justify-center touch-manipulation"
             onClick={() => emblaApi?.scrollTo(index)}
             aria-label={`Aller à ${destination.title}`}
           >
@@ -321,6 +321,14 @@ export default function LuxuryTravelAgency() {
       console.error('Type d\'erreur:', typeof error)
       console.error('Détails de l\'erreur:', JSON.stringify(error, null, 2))
       
+      // Fonction pour sanitiser les messages d'erreur
+      const sanitizeErrorMessage = (msg: string): string => {
+        // Créer un élément temporaire pour échapper le HTML
+        const temp = document.createElement('div')
+        temp.textContent = msg
+        return temp.innerHTML
+      }
+      
       // Message d'erreur plus informatif
       let errorMessage = "Une erreur est survenue lors de l'envoi de votre demande de réservation."
       
@@ -333,33 +341,64 @@ export default function LuxuryTravelAgency() {
         } else if (error.message.includes('network') || error.message.includes('fetch')) {
           errorMessage = "Problème de connexion. Vérifiez votre connexion internet et réessayez."
         } else {
-          errorMessage = `Erreur: ${error.message}`
+          // Sanitiser le message d'erreur avant de l'utiliser
+          errorMessage = `Erreur: ${sanitizeErrorMessage(error.message)}`
         }
       } else if (typeof error === 'object' && error !== null) {
         // Gérer les erreurs EmailJS qui peuvent être des objets
         const errorObj = error as any
         if (errorObj.status) {
-          errorMessage = `Erreur EmailJS: ${errorObj.status} - ${errorObj.text || 'Erreur inconnue'}`
+          const statusText = errorObj.text || 'Erreur inconnue'
+          errorMessage = `Erreur EmailJS: ${errorObj.status} - ${sanitizeErrorMessage(statusText)}`
         } else {
           errorMessage = "Erreur de configuration EmailJS. Vérifiez les paramètres."
         }
       }
       
-      // Créer une notification d'erreur moderne
+      // Créer une notification d'erreur moderne de manière sécurisée
       const errorNotification = document.createElement('div')
       errorNotification.className = 'fixed top-4 right-4 z-[60] bg-red-500 text-white px-6 py-4 rounded-2xl shadow-2xl animate-in slide-in-from-top-4 duration-300 max-w-md'
-      errorNotification.innerHTML = `
-        <div class="flex items-start space-x-3">
-          <svg class="w-6 h-6 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <div>
-            <p class="font-semibold mb-1">Erreur d'envoi</p>
-            <p class="text-sm opacity-90">${errorMessage}</p>
-            <p class="text-xs opacity-75 mt-2">Contact: adasarr03@gmail.com ou 78 131 91 91</p>
-          </div>
-        </div>
-      `
+      
+      // Créer la structure DOM de manière sécurisée
+      const flexContainer = document.createElement('div')
+      flexContainer.className = 'flex items-start space-x-3'
+      
+      // Créer l'icône SVG
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+      svg.setAttribute('class', 'w-6 h-6 shrink-0 mt-0.5')
+      svg.setAttribute('fill', 'none')
+      svg.setAttribute('stroke', 'currentColor')
+      svg.setAttribute('viewBox', '0 0 24 24')
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path')
+      path.setAttribute('stroke-linecap', 'round')
+      path.setAttribute('stroke-linejoin', 'round')
+      path.setAttribute('stroke-width', '2')
+      path.setAttribute('d', 'M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z')
+      svg.appendChild(path)
+      
+      // Créer le contenu texte
+      const contentDiv = document.createElement('div')
+      
+      const titleP = document.createElement('p')
+      titleP.className = 'font-semibold mb-1'
+      titleP.textContent = "Erreur d'envoi"
+      
+      const messageP = document.createElement('p')
+      messageP.className = 'text-sm opacity-90'
+      messageP.textContent = errorMessage
+      
+      const contactP = document.createElement('p')
+      contactP.className = 'text-xs opacity-75 mt-2'
+      contactP.textContent = 'Contact: adasarr03@gmail.com ou 78 131 91 91'
+      
+      contentDiv.appendChild(titleP)
+      contentDiv.appendChild(messageP)
+      contentDiv.appendChild(contactP)
+      
+      flexContainer.appendChild(svg)
+      flexContainer.appendChild(contentDiv)
+      errorNotification.appendChild(flexContainer)
+      
       document.body.appendChild(errorNotification)
       setTimeout(() => errorNotification.remove(), 8000)
     } finally {
@@ -492,7 +531,7 @@ export default function LuxuryTravelAgency() {
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className={`text-lg font-medium transition-colors ${
+                className={`text-lg font-medium transition-colors min-h-12 flex items-center ${
                   activeSection === item.id
                     ? "text-accent border-b-2 border-accent pb-1"
                     : "text-foreground hover:text-accent"
@@ -508,7 +547,7 @@ export default function LuxuryTravelAgency() {
                 href="https://www.facebook.com/share/19oEV1sKdA/?mibextid=wwXIfr" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="p-2 rounded-lg hover:bg-accent/10 transition-colors focus:outline-none focus:ring-2 focus:ring-accent"
+                className="p-2 rounded-lg hover:bg-accent/10 transition-colors focus:outline-none focus:ring-2 focus:ring-accent min-w-12 min-h-12 flex items-center justify-center"
                 aria-label="Visitez notre page Facebook"
               >
                 <Facebook className="h-5 w-5 text-foreground hover:text-accent" aria-hidden="true" />
@@ -518,7 +557,7 @@ export default function LuxuryTravelAgency() {
                 href="https://instagram.com/roplaneexpress" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="p-2 rounded-lg hover:bg-accent/10 transition-colors focus:outline-none focus:ring-2 focus:ring-accent"
+                className="p-2 rounded-lg hover:bg-accent/10 transition-colors focus:outline-none focus:ring-2 focus:ring-accent min-w-12 min-h-12 flex items-center justify-center"
                 aria-label="Visitez notre page Instagram"
               >
                 <Instagram className="h-5 w-5 text-foreground hover:text-accent" aria-hidden="true" />
@@ -528,7 +567,7 @@ export default function LuxuryTravelAgency() {
                 href="https://tiktok.com/@roplane_express" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="p-2 rounded-lg hover:bg-accent/10 transition-colors focus:outline-none focus:ring-2 focus:ring-accent"
+                className="p-2 rounded-lg hover:bg-accent/10 transition-colors focus:outline-none focus:ring-2 focus:ring-accent min-w-12 min-h-12 flex items-center justify-center"
                 aria-label="Visitez notre page TikTok"
               >
                 <Music className="h-5 w-5 text-foreground hover:text-accent" aria-hidden="true" />
@@ -538,7 +577,7 @@ export default function LuxuryTravelAgency() {
                 href="https://sn.linkedin.com/in/roplane-express-13b39a249" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="p-2 rounded-lg hover:bg-accent/10 transition-colors focus:outline-none focus:ring-2 focus:ring-accent"
+                className="p-2 rounded-lg hover:bg-accent/10 transition-colors focus:outline-none focus:ring-2 focus:ring-accent min-w-12 min-h-12 flex items-center justify-center"
                 aria-label="Visitez notre page LinkedIn"
               >
                 <Linkedin className="h-5 w-5 text-foreground hover:text-accent" aria-hidden="true" />
@@ -549,7 +588,7 @@ export default function LuxuryTravelAgency() {
 
           {/* Mobile Menu Button */}
           <button 
-            className="md:hidden min-w-[48px] min-h-[48px] p-2 rounded-lg hover:bg-accent/10 focus:outline-none focus:ring-2 focus:ring-accent touch-manipulation" 
+            className="md:hidden min-w-12 min-h-12 p-2 rounded-lg hover:bg-accent/10 focus:outline-none focus:ring-2 focus:ring-accent touch-manipulation" 
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label={mobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
             aria-expanded={mobileMenuOpen}
@@ -558,7 +597,7 @@ export default function LuxuryTravelAgency() {
           </button>
 
           <Button 
-            className="hidden md:block bg-accent text-accent-foreground hover:bg-accent/90 min-h-[48px] touch-manipulation"
+            className="hidden md:block bg-accent text-accent-foreground hover:bg-accent/90 min-h-12 touch-manipulation"
             onClick={() => setReservationOpen(true)}
           >
             Réserver Maintenant
@@ -578,7 +617,7 @@ export default function LuxuryTravelAgency() {
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className="block w-full text-left text-lg font-medium text-foreground hover:text-accent min-h-[48px] py-3 touch-manipulation"
+                  className="block w-full text-left text-lg font-medium text-foreground hover:text-accent min-h-12 py-3 touch-manipulation"
                 >
                   {item.label}
                 </button>
@@ -590,7 +629,7 @@ export default function LuxuryTravelAgency() {
                   href="https://www.facebook.com/share/19oEV1sKdA/?mibextid=wwXIfr"
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="min-w-[48px] min-h-[48px] p-3 rounded-lg hover:bg-accent/10 transition-colors focus:outline-none focus:ring-2 focus:ring-accent touch-manipulation flex items-center justify-center"
+                  className="min-w-12 min-h-12 p-3 rounded-lg hover:bg-accent/10 transition-colors focus:outline-none focus:ring-2 focus:ring-accent touch-manipulation flex items-center justify-center"
                   aria-label="Visitez notre page Facebook"
                 >
                   <Facebook className="h-6 w-6 text-foreground hover:text-accent" aria-hidden="true" />
@@ -600,7 +639,7 @@ export default function LuxuryTravelAgency() {
                   href="https://www.instagram.com/roplaneexpress?utm_source=qr&igsh=MXdjaTB4czBqNWdoag==" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="min-w-[48px] min-h-[48px] p-3 rounded-lg hover:bg-accent/10 transition-colors focus:outline-none focus:ring-2 focus:ring-accent touch-manipulation flex items-center justify-center"
+                  className="min-w-12 min-h-12 p-3 rounded-lg hover:bg-accent/10 transition-colors focus:outline-none focus:ring-2 focus:ring-accent touch-manipulation flex items-center justify-center"
                   aria-label="Visitez notre page Instagram"
                 >
                   <Instagram className="h-6 w-6 text-foreground hover:text-accent" aria-hidden="true" />
@@ -610,7 +649,7 @@ export default function LuxuryTravelAgency() {
                   href="https://tiktok.com/@roplaneexpress" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="min-w-[48px] min-h-[48px] p-3 rounded-lg hover:bg-accent/10 transition-colors focus:outline-none focus:ring-2 focus:ring-accent touch-manipulation flex items-center justify-center"
+                  className="min-w-12 min-h-12 p-3 rounded-lg hover:bg-accent/10 transition-colors focus:outline-none focus:ring-2 focus:ring-accent touch-manipulation flex items-center justify-center"
                   aria-label="Visitez notre page TikTok"
                 >
                   <Music className="h-6 w-6 text-foreground hover:text-accent" aria-hidden="true" />
@@ -620,7 +659,7 @@ export default function LuxuryTravelAgency() {
                   href="https://sn.linkedin.com/in/roplane-express-13b39a249" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="min-w-[48px] min-h-[48px] p-3 rounded-lg hover:bg-accent/10 transition-colors focus:outline-none focus:ring-2 focus:ring-accent touch-manipulation flex items-center justify-center"
+                  className="min-w-12 min-h-12 p-3 rounded-lg hover:bg-accent/10 transition-colors focus:outline-none focus:ring-2 focus:ring-accent touch-manipulation flex items-center justify-center"
                   aria-label="Visitez notre page LinkedIn"
                 >
                   <Linkedin className="h-6 w-6 text-foreground hover:text-accent" aria-hidden="true" />
@@ -629,7 +668,7 @@ export default function LuxuryTravelAgency() {
               </div>
               
               <Button 
-                className="w-full bg-accent text-accent-foreground hover:bg-accent/90 min-h-[48px] touch-manipulation"
+                className="w-full bg-accent text-accent-foreground hover:bg-accent/90 min-h-12 touch-manipulation"
                 onClick={() => setReservationOpen(true)}
               >
                 Réserver Maintenant
@@ -696,7 +735,7 @@ export default function LuxuryTravelAgency() {
             </div>
             <Button 
               variant="ghost" 
-              className="text-gray-700 hover:text-blue-600 flex items-center gap-2 min-h-[48px] min-w-[100px] touch-manipulation"
+              className="text-gray-700 hover:text-blue-600 flex items-center gap-2 min-h-12 min-w-[100px] touch-manipulation"
               aria-label="Voir toutes les destinations"
             >
               Voir tout
@@ -784,7 +823,7 @@ export default function LuxuryTravelAgency() {
               <div className="mt-10">
                 <Button 
                   size="lg"
-                  className="bg-blue-600 text-white hover:bg-blue-700 text-lg px-10 py-6 rounded-xl flex items-center gap-3 min-h-[48px] touch-manipulation"
+                  className="bg-blue-600 text-white hover:bg-blue-700 text-lg px-10 py-6 rounded-xl flex items-center gap-3 min-h-12 touch-manipulation"
                   onClick={() => scrollToSection("contact")}
                 >
                   En savoir plus
@@ -1030,7 +1069,7 @@ export default function LuxuryTravelAgency() {
                   <div className="flex items-center justify-between">
                     <span className="text-2xl font-bold text-accent">Sur devis</span>
                     <Button 
-                      className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 min-h-[48px] touch-manipulation"
+                      className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 min-h-12 touch-manipulation"
                       onClick={() => scrollToSection("contact")}
                     >
                       En Savoir Plus
@@ -1187,7 +1226,7 @@ export default function LuxuryTravelAgency() {
                   <Button 
                     type="submit"
                     disabled={isLoading}
-                    className="w-full bg-accent text-accent-foreground hover:bg-accent/90 text-lg py-6 min-h-[48px] touch-manipulation disabled:opacity-50"
+                    className="w-full bg-accent text-accent-foreground hover:bg-accent/90 text-lg py-6 min-h-12 touch-manipulation disabled:opacity-50"
                   >
                     {isLoading ? "Envoi en cours..." : "Envoyer ma Demande"}
                   </Button>
@@ -1398,7 +1437,7 @@ export default function LuxuryTravelAgency() {
                   variant="ghost"
                   size="lg"
                   onClick={() => setReservationOpen(false)}
-                  className="text-white hover:bg-white/20 p-3 rounded-2xl backdrop-blur-sm border border-white/30 transition-all duration-200 hover:scale-105 min-w-[48px] min-h-[48px] touch-manipulation"
+                  className="text-white hover:bg-white/20 p-3 rounded-2xl backdrop-blur-sm border border-white/30 transition-all duration-200 hover:scale-105 min-w-12 min-h-12 touch-manipulation"
                   aria-label="Fermer la fenêtre de réservation"
                 >
                   <X className="h-6 w-6" aria-hidden="true" />
