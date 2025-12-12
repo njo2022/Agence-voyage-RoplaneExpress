@@ -94,12 +94,12 @@ function DestinationsCarousel() {
     },
     {
       id: 5,
-      title: "Tokyo, Japon",
+      title: "Kigali, Rwanda",
       description: "8 jours • Culture & Gastronomie",
       image: "/Rwanda-Cultural-Tourism.webp",
-      alt: "Tokyo, Japon - Tradition et modernité",
-      badge: null,
-      badgeColor: ""
+      alt: "Kigali, Rwanda - Tradition et modernité",
+      badge: "Recommandé",
+      badgeColor: "bg-blue-500"
     },
     {
       id: 6,
@@ -341,7 +341,7 @@ export default function LuxuryTravelAgency() {
       errorNotification.className = 'fixed top-4 right-4 z-[60] bg-red-500 text-white px-6 py-4 rounded-2xl shadow-2xl animate-in slide-in-from-top-4 duration-300 max-w-md'
       errorNotification.innerHTML = `
         <div class="flex items-start space-x-3">
-          <svg class="w-6 h-6 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-6 h-6 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           <div>
@@ -622,7 +622,7 @@ export default function LuxuryTravelAgency() {
             </p>
 
             <div className="relative inline-flex mt-10 group">
-              <div className="absolute transition-all duration-1000 opacity-70 -inset-px bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-1 group-hover:duration-200"></div>
+              <div className="absolute transition-all duration-1000 opacity-70 -inset-px bg-linear-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-1 group-hover:duration-200"></div>
 
               <Button
                 onClick={() => {
@@ -642,7 +642,7 @@ export default function LuxuryTravelAgency() {
         <div className="mt-16 md:mt-20 px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
           <div className="relative group">
             {/* Bordure avec effet de gradient animé */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-tilt"></div>
+            <div className="absolute -inset-1 bg-linear-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-tilt"></div>
             
             {/* Conteneur de l'image */}
             <div className="relative bg-white rounded-2xl p-1">
@@ -685,14 +685,14 @@ export default function LuxuryTravelAgency() {
             <div className="relative">
               <div className="relative rounded-3xl overflow-hidden shadow-2xl">
                 <img
-                  src="/rwanda.jpg"
-                  alt="Montgolfières au coucher du soleil - Voyagez librement"
+                  src="/excursion-dakar-lac-rose-sahel-decouverte-senegal.webp"
+                  alt="Le Lac Rose, une merveille au sénégal - Voyagez librement"
                   className="w-full h-[500px] object-cover"
                   loading="lazy"
                 />
                 <div className="absolute bottom-6 left-6 bg-white/90 backdrop-blur-sm px-6 py-4 rounded-2xl shadow-lg">
                   <p className="text-gray-800 font-medium text-lg">
-                    "Une expérience client inoubliable, nos experts passionnés vous accompagnent"
+                    "Une expérience client inoubliable, nos guides passionnés vous accompagnent"
                   </p>
                 </div>
               </div>
@@ -735,7 +735,7 @@ export default function LuxuryTravelAgency() {
                   },
                 ].map((item, index) => (
                   <div key={index} className="flex items-center gap-4">
-                    <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                    <div className="shrink-0 w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
                       {item.icon}
                     </div>
                     <p className="text-lg text-gray-700 font-medium">{item.text}</p>
@@ -1323,15 +1323,15 @@ export default function LuxuryTravelAgency() {
 
       {/* Modal de Réservation - Design UX Premium 2.0 */}
       {reservationOpen && (
-        <div className="fixed inset-0 bg-gradient-to-br from-black/60 via-blue-900/30 to-purple-900/30 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-in fade-in duration-500">
-          <div className="relative bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl rounded-[2rem] max-w-5xl w-full max-h-[95vh] overflow-hidden shadow-[0_32px_64px_rgba(0,0,0,0.2)] border border-white/20 dark:border-gray-700/50 animate-in slide-in-from-bottom-8 duration-500">
+        <div className="fixed inset-0 bg-linear-to-br from-black/60 via-blue-900/30 to-purple-900/30 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-in fade-in duration-500">
+          <div className="relative bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl rounded-4xl max-w-5xl w-full max-h-[95vh] overflow-hidden shadow-[0_32px_64px_rgba(0,0,0,0.2)] border border-white/20 dark:border-gray-700/50 animate-in slide-in-from-bottom-8 duration-500">
             
             {/* Decorative Elements */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl"></div>
-            <div className="absolute bottom-0 left-0 w-40 h-40 bg-gradient-to-tr from-green-400/20 to-blue-400/20 rounded-full blur-3xl"></div>
+            <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl"></div>
+            <div className="absolute bottom-0 left-0 w-40 h-40 bg-linear-to-tr from-green-400/20 to-blue-400/20 rounded-full blur-3xl"></div>
             
             {/* Header Redesigné */}
-            <div className="relative bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 p-8 text-white overflow-hidden">
+            <div className="relative bg-linear-to-r from-indigo-600 via-purple-600 to-pink-600 p-8 text-white overflow-hidden">
               <div className="absolute inset-0 bg-black/20 backdrop-blur-sm"></div>
               <div className="absolute top-0 left-0 w-full h-full">
                 <div className="absolute top-4 left-8 w-16 h-16 bg-white/10 rounded-full animate-pulse"></div>
@@ -1347,7 +1347,7 @@ export default function LuxuryTravelAgency() {
                     </svg>
                   </div>
                   <div>
-                    <h2 className="text-3xl font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text">
+                    <h2 className="text-3xl font-bold bg-linear-to-r from-white to-white/80 bg-clip-text">
                       Créez Votre Voyage de Rêve
                     </h2>
                     <p className="text-white/90 text-lg font-medium mt-1">
@@ -1371,15 +1371,15 @@ export default function LuxuryTravelAgency() {
               <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm">
                 <div className="text-center px-8 py-12 animate-in fade-in zoom-in duration-500">
                   <div className="relative inline-block mb-8">
-                    <div className="w-32 h-32 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full flex items-center justify-center shadow-2xl animate-bounce">
+                    <div className="w-32 h-32 bg-linear-to-br from-green-400 to-emerald-600 rounded-full flex items-center justify-center shadow-2xl animate-bounce">
                       <svg className="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                       </svg>
                     </div>
-                    <div className="absolute inset-0 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full animate-ping opacity-30"></div>
+                    <div className="absolute inset-0 bg-linear-to-br from-green-400 to-emerald-600 rounded-full animate-ping opacity-30"></div>
                   </div>
                   
-                  <h3 className="text-4xl font-bold text-gray-800 dark:text-white mb-4 bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                  <h3 className="text-4xl font-bold dark:text-white mb-4 bg-linear-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
                     Demande Envoyée avec Succès !
                   </h3>
                   
@@ -1414,12 +1414,12 @@ export default function LuxuryTravelAgency() {
               <form onSubmit={handleReservationSubmit} className="p-8 space-y-8">
                 
                 {/* Section 1: Informations Personnelles */}
-                <div className="group relative bg-gradient-to-br from-white to-blue-50/50 dark:from-gray-800 dark:to-blue-900/20 rounded-3xl p-8 shadow-lg border border-blue-100 dark:border-blue-800/50 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-t-3xl"></div>
+                <div className="group relative bg-linear-to-br from-white to-blue-50/50 dark:from-gray-800 dark:to-blue-900/20 rounded-3xl p-8 shadow-lg border border-blue-100 dark:border-blue-800/50 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                  <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-blue-500 to-purple-500 rounded-t-3xl"></div>
                   
                   <div className="flex items-center space-x-4 mb-8">
                     <div className="relative">
-                      <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-4 rounded-2xl shadow-lg">
+                      <div className="bg-linear-to-br from-blue-500 to-purple-600 p-4 rounded-2xl shadow-lg">
                         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
@@ -1493,12 +1493,12 @@ export default function LuxuryTravelAgency() {
                 </div>
 
                 {/* Section 2: Destination et Dates */}
-                <div className="group relative bg-gradient-to-br from-white to-green-50/50 dark:from-gray-800 dark:to-green-900/20 rounded-3xl p-8 shadow-lg border border-green-100 dark:border-green-800/50 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-500 to-blue-500 rounded-t-3xl"></div>
+                <div className="group relative bg-linear-to-br from-white to-green-50/50 dark:from-gray-800 dark:to-green-900/20 rounded-3xl p-8 shadow-lg border border-green-100 dark:border-green-800/50 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                  <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-green-500 to-blue-500 rounded-t-3xl"></div>
                   
                   <div className="flex items-center space-x-4 mb-8">
                     <div className="relative">
-                      <div className="bg-gradient-to-br from-green-500 to-blue-600 p-4 rounded-2xl shadow-lg">
+                      <div className="bg-linear-to-br from-green-500 to-blue-600 p-4 rounded-2xl shadow-lg">
                         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -1559,12 +1559,12 @@ export default function LuxuryTravelAgency() {
                 </div>
 
                 {/* Section 3: Préférences Premium */}
-                <div className="group relative bg-gradient-to-br from-white to-purple-50/50 dark:from-gray-800 dark:to-purple-900/20 rounded-3xl p-8 shadow-lg border border-purple-100 dark:border-purple-800/50 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-t-3xl"></div>
+                <div className="group relative bg-linear-to-br from-white to-purple-50/50 dark:from-gray-800 dark:to-purple-900/20 rounded-3xl p-8 shadow-lg border border-purple-100 dark:border-purple-800/50 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                  <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-purple-500 to-pink-500 rounded-t-3xl"></div>
                   
                   <div className="flex items-center space-x-4 mb-8">
                     <div className="relative">
-                      <div className="bg-gradient-to-br from-purple-500 to-pink-600 p-4 rounded-2xl shadow-lg">
+                      <div className="bg-linear-to-br from-purple-500 to-pink-600 p-4 rounded-2xl shadow-lg">
                         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                         </svg>
@@ -1647,9 +1647,9 @@ export default function LuxuryTravelAgency() {
                   <Button
                     type="submit"
                     disabled={isLoading}
-                    className="flex-1 relative bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-700 hover:via-purple-700 hover:to-pink-700 text-white text-xl py-8 rounded-2xl disabled:opacity-50 transition-all duration-300 shadow-2xl hover:shadow-3xl transform hover:-translate-y-1 overflow-hidden group"
+                    className="flex-1 relative bg-linear-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-700 hover:via-purple-700 hover:to-pink-700 text-white text-xl py-8 rounded-2xl disabled:opacity-50 transition-all duration-300 shadow-2xl hover:shadow-3xl transform hover:-translate-y-1 overflow-hidden group"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="absolute inset-0 bg-linear-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     {isLoading ? (
                       <div className="flex items-center justify-center space-x-3 relative z-10">
                         <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
