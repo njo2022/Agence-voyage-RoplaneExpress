@@ -1,0 +1,13 @@
+# Security Contact Information
+Contact: mailto:adasarr03@gmail.com
+Preferred-Languages: fr, en
+Canonical: https://roplaneexpress.com/.well-known/security.txt
+
+# Expiration date for this security.txt file
+Expires: 2026-12-31T23:59:59.000Z
+
+# Policy
+Policy: https://roplaneexpress.com/security-policy
+
+# Acknowledgments
+Acknowledgments: https://roplaneexpress.com/security-acknowledgments

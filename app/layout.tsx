@@ -56,6 +56,9 @@ export const metadata: Metadata = {
   verification: {
     google: 'your-google-verification-code',
   },
+  other: {
+    'referrer': 'origin-when-cross-origin',
+  },
 }
 
 export default function RootLayout({
@@ -66,18 +69,17 @@ export default function RootLayout({
   return (
     <html lang="fr" suppressHydrationWarning>
       <head>
-        {/* Métadonnées uniquement dans le head */}
+        {/* Préchargement DNS pour les ressources externes */}
+        <link rel="dns-prefetch" href="https://cdn.emailjs.com" />
+        <link rel="dns-prefetch" href="https://tile.openstreetmap.org" />
+        <link rel="preconnect" href="https://cdn.emailjs.com" crossOrigin="anonymous" />
+        
+        {/* Métadonnées de sécurité supplémentaires */}
+        <meta httpEquiv="X-Content-Type-Options" content="nosniff" />
+        <meta name="referrer" content="origin-when-cross-origin" />
       </head>
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
         {children}
-        
-        {/* Start of HubSpot Embed Code */}
-        <Script
-          id="hs-script-loader"
-          strategy="afterInteractive"
-          src="//js-eu1.hs-scripts.com/147415293.js"
-        />
-        {/* End of HubSpot Embed Code */}
       </body>
     </html>
   )

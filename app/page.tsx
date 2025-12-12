@@ -7,6 +7,7 @@ import useEmblaCarousel from 'embla-carousel-react'
 export const dynamic = 'force-dynamic'
 import emailjs from '@emailjs/browser'
 import { emailConfig } from '../lib/email-config'
+import { sanitizeFormData, validateContactData } from '../lib/security'
 import { Button } from "../components/ui/button"
 import { Card, CardContent } from "../components/ui/card"
 import { Input } from "../components/ui/input"
@@ -63,7 +64,7 @@ function DestinationsCarousel() {
       image: "/visiter-chine.webp",
       alt: "CHINE - Voyage organisé",
       badge: "Populaire",
-      badgeColor: "bg-green-500"
+      badgeColor: "bg-green-700"
     },
     {
       id: 2,
@@ -90,7 +91,7 @@ function DestinationsCarousel() {
       image: "/dubai-tourisme-dramadaire.webp",
       alt: "Dubai - Ville moderne",
       badge: "Nouveauté",
-      badgeColor: "bg-blue-500"
+      badgeColor: "bg-blue-700"
     },
     {
       id: 5,
@@ -99,7 +100,7 @@ function DestinationsCarousel() {
       image: "/Rwanda-Cultural-Tourism.webp",
       alt: "Kigali, Rwanda - Tradition et modernité",
       badge: "Recommandé",
-      badgeColor: "bg-blue-500"
+      badgeColor: "bg-blue-700"
     },
     {
       id: 6,
@@ -108,29 +109,31 @@ function DestinationsCarousel() {
       image: "/new-york-touriste.webp",
       alt: "New York - Big Apple",
       badge: "Tendance",
-      badgeColor: "bg-purple-500"
+      badgeColor: "bg-purple-700"
     }
   ]
 
   return (
     <div className="relative">
       {/* Boutons de navigation */}
-      <div className="absolute -top-20 right-0 flex gap-2 z-10">
+      <div className="absolute -top-20 right-0 flex gap-3 z-10">
         <Button
           variant="outline"
           size="icon"
           onClick={scrollPrev}
-          className="h-12 w-12 rounded-full border-2 hover:bg-blue-50"
+          className="min-h-[48px] min-w-[48px] h-12 w-12 rounded-full border-2 hover:bg-blue-50 touch-manipulation"
+          aria-label="Destination précédente"
         >
-          <ChevronLeft className="h-6 w-6" />
+          <ChevronLeft className="h-6 w-6" aria-hidden="true" />
         </Button>
         <Button
           variant="outline"
           size="icon"
           onClick={scrollNext}
-          className="h-12 w-12 rounded-full border-2 hover:bg-blue-50"
+          className="min-h-[48px] min-w-[48px] h-12 w-12 rounded-full border-2 hover:bg-blue-50 touch-manipulation"
+          aria-label="Destination suivante"
         >
-          <ChevronRight className="h-6 w-6" />
+          <ChevronRight className="h-6 w-6" aria-hidden="true" />
         </Button>
       </div>
 
@@ -160,7 +163,10 @@ function DestinationsCarousel() {
                   <p className="text-gray-600 mb-4">{destination.description}</p>
                   <div className="flex justify-between items-center">
                     <span className="text-xl font-semibold text-blue-600">Sur devis</span>
-                    <Button className="bg-blue-600 text-white hover:bg-blue-700">
+                    <Button 
+                      className="bg-blue-600 text-white hover:bg-blue-700 min-w-[100px] min-h-[44px]"
+                      aria-label={`Réserver un voyage à ${destination.title}`}
+                    >
                       Réserver
                     </Button>
                   </div>
@@ -172,13 +178,16 @@ function DestinationsCarousel() {
       </div>
 
       {/* Indicateurs de points (optionnel) */}
-      <div className="flex justify-center gap-2 mt-8">
-        {destinations.map((_, index) => (
+      <div className="flex justify-center gap-3 mt-8" role="group" aria-label="Navigation des destinations">
+        {destinations.map((destination, index) => (
           <button
             key={index}
-            className="w-2 h-2 rounded-full bg-gray-300 hover:bg-blue-600 transition-colors"
+            className="min-w-[48px] min-h-[48px] w-12 h-12 rounded-full bg-gray-400 hover:bg-blue-700 active:bg-blue-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 flex items-center justify-center touch-manipulation"
             onClick={() => emblaApi?.scrollTo(index)}
-          />
+            aria-label={`Aller à ${destination.title}`}
+          >
+            <span className="w-3 h-3 rounded-full bg-white" aria-hidden="true"></span>
+          </button>
         ))}
       </div>
     </div>
@@ -371,6 +380,15 @@ export default function LuxuryTravelAgency() {
     setIsLoading(true)
 
     try {
+      // Sanitiser les données
+      const sanitizedData = sanitizeFormData(contactData)
+      
+      // Valider les données
+      const validation = validateContactData(sanitizedData)
+      if (!validation.isValid) {
+        throw new Error(validation.errors.join('. '))
+      }
+
       // Vérifier que emailjs est disponible
       if (!emailjs || typeof emailjs.send !== 'function') {
         throw new Error('EmailJS n\'est pas correctement initialisé')
@@ -383,24 +401,17 @@ export default function LuxuryTravelAgency() {
       console.log('Configuration EmailJS (Contact):', {
         serviceId: serviceId ? 'Défini' : 'Manquant',
         templateId: templateId ? 'Défini' : 'Manquant', 
-        publicKey: publicKey ? 'Défini' : 'Manquant',
-        destinationEmail: destinationEmail ? 'Défini' : 'Manquant'
       })
-
-      // Vérifier que toutes les configurations sont présentes
-      if (!serviceId || !templateId || !publicKey || !destinationEmail) {
-        throw new Error('Configuration EmailJS incomplète')
-      }
-
+      
       // Préparer les données pour l'email de contact
       const templateParams = {
         to_email: destinationEmail,
-        from_name: `${contactData.firstName} ${contactData.lastName}`,
-        from_email: contactData.email,
-        phone: contactData.phone,
-        destination: contactData.destination,
-        message: contactData.message,
-        reply_to: contactData.email
+        from_name: `${sanitizedData.firstName} ${sanitizedData.lastName}`,
+        from_email: sanitizedData.email,
+        phone: sanitizedData.phone,
+        destination: sanitizedData.destination,
+        message: sanitizedData.message,
+        reply_to: sanitizedData.email
       }
 
       console.log('Envoi email contact avec les paramètres:', templateParams)
@@ -456,7 +467,12 @@ export default function LuxuryTravelAgency() {
 
   return (
     <div className="min-h-screen bg-background">
-      <nav className="fixed top-0 w-full bg-background/95 backdrop-blur-sm border-b border-border z-50">
+      {/* Skip to main content pour accessibilité */}
+      <a href="#main-content" className="skip-to-main">
+        Aller au contenu principal
+      </a>
+      
+      <nav className="fixed top-0 w-full bg-background/95 backdrop-blur-sm border-b border-border z-50" role="navigation" aria-label="Navigation principale">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="bg-accent p-2 rounded-lg">
@@ -492,48 +508,57 @@ export default function LuxuryTravelAgency() {
                 href="https://www.facebook.com/share/19oEV1sKdA/?mibextid=wwXIfr" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="p-2 rounded-lg hover:bg-accent/10 transition-colors"
-                title="Facebook"
+                className="p-2 rounded-lg hover:bg-accent/10 transition-colors focus:outline-none focus:ring-2 focus:ring-accent"
+                aria-label="Visitez notre page Facebook"
               >
-                <Facebook className="h-5 w-5 text-foreground hover:text-accent" />
+                <Facebook className="h-5 w-5 text-foreground hover:text-accent" aria-hidden="true" />
+                <span className="sr-only">Facebook</span>
               </a>
               <a 
                 href="https://instagram.com/roplaneexpress" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="p-2 rounded-lg hover:bg-accent/10 transition-colors"
-                title="Instagram"
+                className="p-2 rounded-lg hover:bg-accent/10 transition-colors focus:outline-none focus:ring-2 focus:ring-accent"
+                aria-label="Visitez notre page Instagram"
               >
-                <Instagram className="h-5 w-5 text-foreground hover:text-accent" />
+                <Instagram className="h-5 w-5 text-foreground hover:text-accent" aria-hidden="true" />
+                <span className="sr-only">Instagram</span>
               </a>
               <a 
                 href="https://tiktok.com/@roplane_express" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="p-2 rounded-lg hover:bg-accent/10 transition-colors"
-                title="TikTok"
+                className="p-2 rounded-lg hover:bg-accent/10 transition-colors focus:outline-none focus:ring-2 focus:ring-accent"
+                aria-label="Visitez notre page TikTok"
               >
-                <Music className="h-5 w-5 text-foreground hover:text-accent" />
+                <Music className="h-5 w-5 text-foreground hover:text-accent" aria-hidden="true" />
+                <span className="sr-only">TikTok</span>
               </a>
               <a 
                 href="https://sn.linkedin.com/in/roplane-express-13b39a249" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="p-2 rounded-lg hover:bg-accent/10 transition-colors"
-                title="LinkedIn"
+                className="p-2 rounded-lg hover:bg-accent/10 transition-colors focus:outline-none focus:ring-2 focus:ring-accent"
+                aria-label="Visitez notre page LinkedIn"
               >
-                <Linkedin className="h-5 w-5 text-foreground hover:text-accent" />
+                <Linkedin className="h-5 w-5 text-foreground hover:text-accent" aria-hidden="true" />
+                <span className="sr-only">LinkedIn</span>
               </a>
             </div>
           </div>
 
           {/* Mobile Menu Button */}
-          <button className="md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          <button 
+            className="md:hidden min-w-[48px] min-h-[48px] p-2 rounded-lg hover:bg-accent/10 focus:outline-none focus:ring-2 focus:ring-accent touch-manipulation" 
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label={mobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
+            aria-expanded={mobileMenuOpen}
+          >
+            {mobileMenuOpen ? <X className="h-6 w-6" aria-hidden="true" /> : <Menu className="h-6 w-6" aria-hidden="true" />}
           </button>
 
           <Button 
-            className="hidden md:block bg-accent text-accent-foreground hover:bg-accent/90"
+            className="hidden md:block bg-accent text-accent-foreground hover:bg-accent/90 min-h-[48px] touch-manipulation"
             onClick={() => setReservationOpen(true)}
           >
             Réserver Maintenant
@@ -553,7 +578,7 @@ export default function LuxuryTravelAgency() {
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className="block w-full text-left text-lg font-medium text-foreground hover:text-accent"
+                  className="block w-full text-left text-lg font-medium text-foreground hover:text-accent min-h-[48px] py-3 touch-manipulation"
                 >
                   {item.label}
                 </button>
@@ -565,42 +590,46 @@ export default function LuxuryTravelAgency() {
                   href="https://www.facebook.com/share/19oEV1sKdA/?mibextid=wwXIfr"
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="p-3 rounded-lg hover:bg-accent/10 transition-colors"
-                  title="Facebook"
+                  className="min-w-[48px] min-h-[48px] p-3 rounded-lg hover:bg-accent/10 transition-colors focus:outline-none focus:ring-2 focus:ring-accent touch-manipulation flex items-center justify-center"
+                  aria-label="Visitez notre page Facebook"
                 >
-                  <Facebook className="h-6 w-6 text-foreground hover:text-accent" />
+                  <Facebook className="h-6 w-6 text-foreground hover:text-accent" aria-hidden="true" />
+                  <span className="sr-only">Facebook</span>
                 </a>
                 <a 
                   href="https://www.instagram.com/roplaneexpress?utm_source=qr&igsh=MXdjaTB4czBqNWdoag==" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="p-3 rounded-lg hover:bg-accent/10 transition-colors"
-                  title="Instagram"
+                  className="min-w-[48px] min-h-[48px] p-3 rounded-lg hover:bg-accent/10 transition-colors focus:outline-none focus:ring-2 focus:ring-accent touch-manipulation flex items-center justify-center"
+                  aria-label="Visitez notre page Instagram"
                 >
-                  <Instagram className="h-6 w-6 text-foreground hover:text-accent" />
+                  <Instagram className="h-6 w-6 text-foreground hover:text-accent" aria-hidden="true" />
+                  <span className="sr-only">Instagram</span>
                 </a>
                 <a 
                   href="https://tiktok.com/@roplaneexpress" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="p-3 rounded-lg hover:bg-accent/10 transition-colors"
-                  title="TikTok"
+                  className="min-w-[48px] min-h-[48px] p-3 rounded-lg hover:bg-accent/10 transition-colors focus:outline-none focus:ring-2 focus:ring-accent touch-manipulation flex items-center justify-center"
+                  aria-label="Visitez notre page TikTok"
                 >
-                  <Music className="h-6 w-6 text-foreground hover:text-accent" />
+                  <Music className="h-6 w-6 text-foreground hover:text-accent" aria-hidden="true" />
+                  <span className="sr-only">TikTok</span>
                 </a>
                 <a 
                   href="https://sn.linkedin.com/in/roplane-express-13b39a249" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="p-3 rounded-lg hover:bg-accent/10 transition-colors"
-                  title="LinkedIn"
+                  className="min-w-[48px] min-h-[48px] p-3 rounded-lg hover:bg-accent/10 transition-colors focus:outline-none focus:ring-2 focus:ring-accent touch-manipulation flex items-center justify-center"
+                  aria-label="Visitez notre page LinkedIn"
                 >
-                  <Linkedin className="h-6 w-6 text-foreground hover:text-accent" />
+                  <Linkedin className="h-6 w-6 text-foreground hover:text-accent" aria-hidden="true" />
+                  <span className="sr-only">LinkedIn</span>
                 </a>
               </div>
               
               <Button 
-                className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
+                className="w-full bg-accent text-accent-foreground hover:bg-accent/90 min-h-[48px] touch-manipulation"
                 onClick={() => setReservationOpen(true)}
               >
                 Réserver Maintenant
@@ -610,11 +639,12 @@ export default function LuxuryTravelAgency() {
         )}
       </nav>
 
-      <section id="accueil" className="relative py-12 sm:py-16 lg:pt-20 xl:pb-0">
-        <div className="relative px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
+      <main id="main-content" role="main">
+      <section id="accueil" className="relative py-12 sm:py-16 lg:pt-20 xl:pb-0" aria-labelledby="hero-heading">
+        <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             
-            <h1 className="mt-5 text-4xl font-bold leading-tight text-gray-900 sm:text-5xl sm:leading-tight lg:text-6xl lg:leading-tight font-pj">
+            <h1 id="hero-heading" className="mt-5 text-4xl font-bold leading-tight text-gray-900 sm:text-5xl sm:leading-tight lg:text-6xl lg:leading-tight font-pj">
               Explorez le Monde <span className="text-blue-600">Autrement</span>
             </h1>
             <p className="max-w-md mx-auto mt-6 text-base leading-7 text-gray-600 font-inter">
@@ -637,7 +667,6 @@ export default function LuxuryTravelAgency() {
               </Button>
             </div>
           </div>
-        </div>
 
         <div className="mt-16 md:mt-20 px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
           <div className="relative group">
@@ -654,19 +683,24 @@ export default function LuxuryTravelAgency() {
             </div>
           </div>
         </div>
+        </div>
       </section>
 
       {/* Destinations Populaires Section */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-white" aria-labelledby="destinations-heading">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-12">
             <div>
               <p className="text-sm text-blue-600 font-semibold uppercase tracking-wide mb-2">INSPIRATION</p>
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900">Destinations Populaires</h2>
+              <h2 id="destinations-heading" className="text-4xl md:text-5xl font-bold text-gray-900">Destinations Populaires</h2>
             </div>
-            <Button variant="ghost" className="text-gray-700 hover:text-blue-600 flex items-center gap-2">
+            <Button 
+              variant="ghost" 
+              className="text-gray-700 hover:text-blue-600 flex items-center gap-2 min-h-[48px] min-w-[100px] touch-manipulation"
+              aria-label="Voir toutes les destinations"
+            >
               Voir tout
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </Button>
@@ -678,7 +712,7 @@ export default function LuxuryTravelAgency() {
       </section>
 
       {/* Section Voyagez sans contraintes */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-gray-50" aria-labelledby="benefits-heading">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             {/* Image avec design moderne */}
@@ -689,6 +723,10 @@ export default function LuxuryTravelAgency() {
                   alt="Le Lac Rose, une merveille au sénégal - Voyagez librement"
                   className="w-full h-[500px] object-cover"
                   loading="lazy"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = '/cap-skirring-casamance-senegal.webp';
+                  }}
                 />
                 <div className="absolute bottom-6 left-6 bg-white/90 backdrop-blur-sm px-6 py-4 rounded-2xl shadow-lg">
                   <p className="text-gray-800 font-medium text-lg">
@@ -700,7 +738,7 @@ export default function LuxuryTravelAgency() {
 
             {/* Contenu */}
             <div>
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">
+              <h2 id="benefits-heading" className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">
                 Voyagez sans contraintes
               </h2>
               <p className="text-xl text-gray-600 mb-10 leading-relaxed">
@@ -746,7 +784,7 @@ export default function LuxuryTravelAgency() {
               <div className="mt-10">
                 <Button 
                   size="lg"
-                  className="bg-blue-600 text-white hover:bg-blue-700 text-lg px-10 py-6 rounded-xl flex items-center gap-3"
+                  className="bg-blue-600 text-white hover:bg-blue-700 text-lg px-10 py-6 rounded-xl flex items-center gap-3 min-h-[48px] touch-manipulation"
                   onClick={() => scrollToSection("contact")}
                 >
                   En savoir plus
@@ -760,11 +798,11 @@ export default function LuxuryTravelAgency() {
         </div>
       </section>
 
-      <section id="apropos" className="py-24 bg-background">
+      <section id="apropos" className="py-24 bg-background" aria-labelledby="about-heading">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="text-5xl md:text-6xl font-bold text-foreground mb-8">À Propos de Roplane Express - Agence de Voyage Dakar</h2>
+              <h2 id="about-heading" className="text-5xl md:text-6xl font-bold text-foreground mb-8">À Propos de Roplane Express - Agence de Voyage Dakar</h2>
               <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
                 Depuis 2009, Roplane Express est votre agence de voyage de confiance à Dakar, spécialisée dans le tourisme au Sénégal et en Afrique. Nous créons des expériences sur
                 mesure qui dépassent vos attentes les plus élevées.
@@ -840,10 +878,10 @@ export default function LuxuryTravelAgency() {
       </section>
 
       {/* Section Témoignages - Ce qu'ils en disent */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-white" aria-labelledby="testimonials-heading">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Ce qu'ils en disent</h2>
+            <h2 id="testimonials-heading" className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Ce qu'ils en disent</h2>
             <p className="text-xl text-gray-600">Des milliers de voyageurs nous font confiance pour leurs aventures</p>
           </div>
 
@@ -926,10 +964,10 @@ export default function LuxuryTravelAgency() {
         </div>
       </section>
 
-      <section id="services" className="py-24 bg-muted">
+      <section id="services" className="py-24 bg-muted" aria-labelledby="services-heading">
         <div className="container mx-auto px-4">
           <div className="text-center mb-20">
-            <h2 className="text-5xl md:text-6xl font-bold text-foreground mb-8">Nos Services de Voyage Sur Mesure au Sénégal</h2>
+            <h2 id="services-heading" className="text-5xl md:text-6xl font-bold text-foreground mb-8">Nos Services de Voyage Sur Mesure au Sénégal</h2>
             <p className="text-2xl text-muted-foreground max-w-3xl mx-auto">
               Des expériences de voyage sur mesure au Sénégal conçues pour les voyageurs les plus exigeants. Réservation voyage personnalisée avec guide touristique expert.
             </p>
@@ -992,7 +1030,7 @@ export default function LuxuryTravelAgency() {
                   <div className="flex items-center justify-between">
                     <span className="text-2xl font-bold text-accent">Sur devis</span>
                     <Button 
-                      className="bg-primary text-primary-foreground hover:bg-primary/90 px-8"
+                      className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 min-h-[48px] touch-manipulation"
                       onClick={() => scrollToSection("contact")}
                     >
                       En Savoir Plus
@@ -1044,10 +1082,10 @@ export default function LuxuryTravelAgency() {
         </div>
       </section>
 
-      <section id="contact" className="py-24 bg-background">
+      <section id="contact" className="py-24 bg-background" aria-labelledby="contact-heading">
         <div className="container mx-auto px-4">
           <div className="text-center mb-20">
-            <h2 className="text-5xl md:text-6xl font-bold text-foreground mb-8">Contactez Roplane Express - Agence Voyage Dakar</h2>
+            <h2 id="contact-heading" className="text-5xl md:text-6xl font-bold text-foreground mb-8">Contactez Roplane Express - Agence Voyage Dakar</h2>
             <p className="text-2xl text-muted-foreground max-w-3xl mx-auto">
               Prêt à vivre l'expérience de voyage de vos rêves ? Parlons-en ensemble.
             </p>
@@ -1149,7 +1187,7 @@ export default function LuxuryTravelAgency() {
                   <Button 
                     type="submit"
                     disabled={isLoading}
-                    className="w-full bg-accent text-accent-foreground hover:bg-accent/90 text-lg py-6 disabled:opacity-50"
+                    className="w-full bg-accent text-accent-foreground hover:bg-accent/90 text-lg py-6 min-h-[48px] touch-manipulation disabled:opacity-50"
                   >
                     {isLoading ? "Envoi en cours..." : "Envoyer ma Demande"}
                   </Button>
@@ -1209,8 +1247,9 @@ export default function LuxuryTravelAgency() {
           </div>
         </div>
       </section>
+      </main>
 
-      <footer className="bg-primary text-primary-foreground py-16">
+      <footer className="bg-primary text-primary-foreground py-16" role="contentinfo">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
             <div className="md:col-span-2">
@@ -1359,9 +1398,10 @@ export default function LuxuryTravelAgency() {
                   variant="ghost"
                   size="lg"
                   onClick={() => setReservationOpen(false)}
-                  className="text-white hover:bg-white/20 p-3 rounded-2xl backdrop-blur-sm border border-white/30 transition-all duration-200 hover:scale-105"
+                  className="text-white hover:bg-white/20 p-3 rounded-2xl backdrop-blur-sm border border-white/30 transition-all duration-200 hover:scale-105 min-w-[48px] min-h-[48px] touch-manipulation"
+                  aria-label="Fermer la fenêtre de réservation"
                 >
-                  <X className="h-6 w-6" />
+                  <X className="h-6 w-6" aria-hidden="true" />
                 </Button>
               </div>
             </div>

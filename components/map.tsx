@@ -19,19 +19,19 @@ function MapComponent({ className = "" }: MapProps) {
     
     let L: any
     
-    try {
-      // Vérifier que nous sommes côté client
-      if (typeof window === 'undefined') return
+    const initMap = async () => {
+      try {
+        // Vérifier que nous sommes côté client
+        if (typeof window === 'undefined') return
 
-      // Import CSS et Leaflet avec vérification
-      require('leaflet/dist/leaflet.css')
-      L = require('leaflet')
-      
-      // Vérifier que Leaflet a bien été chargé
-      if (!L || typeof L.map !== 'function') {
-        console.error('Leaflet n\'a pas pu être chargé correctement')
-        return
-      }
+        // Import CSS et Leaflet avec vérification
+        require('leaflet/dist/leaflet.css')
+        L = require('leaflet')
+        
+        // Vérifier que Leaflet a bien été chargé
+        if (!L || typeof L.map !== 'function') {
+          return
+        }
       
       // Fix des icônes Leaflet
       if (L && L.Icon && L.Icon.Default) {
@@ -53,29 +53,34 @@ function MapComponent({ className = "" }: MapProps) {
         scrollWheelZoom: true,
       })
 
-      // Ajouter les tuiles
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(map)
+        // Ajouter les tuiles avec meilleure performance
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          maxZoom: 19,
+          tileSize: 256
+        }).addTo(map)
 
-      // Ajouter le marqueur
-      const marker = L.marker([14.750966932516116, -17.46474820569469]).addTo(map)
-      
-      // Popup pour le marqueur
-      marker.bindPopup(`
-        <div style="text-align: center;">
-          <h3 style="font-weight: bold; font-size: 1.125rem; margin-bottom: 0.5rem;">Roplane Express</h3>
-          <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0.25rem;">Agence de Voyage de Luxe</p>
-          <p style="font-size: 0.875rem; margin-bottom: 0.25rem;">QG2P+93R Passerelle nord foire</p>
-          <p style="font-size: 0.875rem;">Dakar, Sénégal</p>
-        </div>
-      `)
+        // Ajouter le marqueur
+        const marker = L.marker([14.750966932516116, -17.46474820569469]).addTo(map)
+        
+        // Popup pour le marqueur
+        marker.bindPopup(`
+          <div style="text-align: center;">
+            <h3 style="font-weight: bold; font-size: 1.125rem; margin-bottom: 0.5rem;">Roplane Express</h3>
+            <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0.25rem;">Agence de Voyage de Luxe</p>
+            <p style="font-size: 0.875rem; margin-bottom: 0.25rem;">QG2P+93R Passerelle nord foire</p>
+            <p style="font-size: 0.875rem;">Dakar, Sénégal</p>
+          </div>
+        `)
 
-      mapInstanceRef.current = map
+        mapInstanceRef.current = map
 
-    } catch (error) {
-      console.error('Erreur lors de l\'initialisation de la carte:', error)
+      } catch (error) {
+        // Erreur silencieuse pour ne pas polluer la console
+      }
     }
+
+    initMap()
 
     // Nettoyage
     return () => {
