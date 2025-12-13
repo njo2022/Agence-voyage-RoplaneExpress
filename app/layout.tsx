@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { GeistSans } from 'geist/font/sans'
 import { GeistMono } from 'geist/font/mono'
-import Script from 'next/script'
+import HubspotChat from '../components/hubspot-chat'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -72,7 +72,9 @@ export default function RootLayout({
         {/* Préchargement DNS pour les ressources externes */}
         <link rel="dns-prefetch" href="https://cdn.emailjs.com" />
         <link rel="dns-prefetch" href="https://tile.openstreetmap.org" />
+        <link rel="dns-prefetch" href="https://js-eu1.hs-scripts.com" />
         <link rel="preconnect" href="https://cdn.emailjs.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://js-eu1.hs-scripts.com" crossOrigin="anonymous" />
         
         {/* Métadonnées de sécurité supplémentaires */}
         <meta httpEquiv="X-Content-Type-Options" content="nosniff" />
@@ -80,6 +82,7 @@ export default function RootLayout({
       </head>
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
         {children}
+        <HubspotChat />
       </body>
     </html>
   )

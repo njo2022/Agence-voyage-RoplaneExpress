@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Hubspot Chat - Debug</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .status { 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-radius: 5px; 
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .info { background: #d1ecf1; color: #0c5460; }
+        pre { 
+            background: #f5f5f5; 
+            padding: 10px; 
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Test Hubspot Chat Widget - Debug</h1>
+    
+    <div id="status" class="status info">
+        ⏳ Chargement du widget Hubspot...
+    </div>
+    
+    <div id="details"></div>
+    
+    <h2>Configuration testée :</h2>
+    <pre id="config"></pre>
+    
+    <h2>Étapes suivantes si le widget ne s'affiche pas :</h2>
+    <ol>
+        <li>Vérifiez que le chat est bien publié (pas en brouillon)</li>
+        <li>Vérifiez que le domaine est autorisé dans Hubspot (Settings > Conversations > Chat widget > Target)</li>
+        <li>Le widget peut prendre 5-10 minutes pour s'activer après publication</li>
+        <li>Essayez avec l'URL US : https://js.hs-scripts.com/147415293.js</li>
+    </ol>
+
+    <script>
+        const config = {
+            portalId: '147415293',
+            region: 'EU1',
+            scriptUrl: 'https://js-eu1.hs-scripts.com/147415293.js',
+            environment: 'prod',
+            defaultChatFlow: 'roplane_express'
+        };
+        
+        document.getElementById('config').textContent = JSON.stringify(config, null, 2);
+        
+        console.log('🔍 Configuration Hubspot:', config);
+        
+        // Tester la disponibilité du script
+        fetch(config.scriptUrl, { method: 'HEAD' })
+            .then(response => {
+                console.log('📡 Script URL status:', response.status);
+                if (response.ok) {
+                    console.log('✅ Script URL is accessible');
+                } else {
+                    console.error('❌ Script URL returned:', response.status);
+                }
+            })
+            .catch(err => {
+                console.error('❌ Cannot reach script URL:', err);
+            });
+    </script>
+    
+    <!-- Script Hubspot EU -->
+    <script type="text/javascript" id="hs-script-loader-eu" async defer src="https://js-eu1.hs-scripts.com/147415293.js"></script>
+    
+    <!-- Script Hubspot US (fallback) -->
+    <script type="text/javascript" id="hs-script-loader-us" async defer src="https://js.hs-scripts.com/147415293.js"></script>
+    
+    <script>
+        let checkCount = 0;
+        const maxChecks = 20; // 20 secondes
+        
+        const checkWidget = setInterval(function() {
+            checkCount++;
+            const statusDiv = document.getElementById('status');
+            const detailsDiv = document.getElementById('details');
+            
+            if (window.HubSpotConversations) {
+                clearInterval(checkWidget);
+                statusDiv.className = 'status success';
+                statusDiv.innerHTML = '✅ Widget Hubspot chargé avec succès !';
+                
+                console.log('✅ SUCCESS! Hubspot widget loaded');
+                console.log('Widget object:', window.HubSpotConversations);
+                
+                detailsDiv.innerHTML = '<div class="status success">Le widget devrait apparaître en bas à droite de la page dans quelques secondes.</div>';
+            } else if (checkCount >= maxChecks) {
+                clearInterval(checkWidget);
+                statusDiv.className = 'status error';
+                statusDiv.innerHTML = '❌ Le widget Hubspot n\'a pas pu être chargé après 20 secondes';
+                
+                console.error('❌ FAILED: Hubspot widget not found after 20 seconds');
+                
+                detailsDiv.innerHTML = `
+                    <div class="status error">
+                        <strong>Le widget ne se charge pas. Causes possibles :</strong>
+                        <ul>
+                            <li>Le Portal ID <strong>147415293</strong> n'existe pas ou est incorrect</li>
+                            <li>Le chat widget n'est pas activé/publié dans votre compte Hubspot</li>
+                            <li>Le domaine localhost n'est pas autorisé (vérifiez dans Hubspot Settings)</li>
+                            <li>Votre compte Hubspot est peut-être en version gratuite qui ne supporte pas le chat</li>
+                        </ul>
+                        <p><strong>À vérifier dans Hubspot :</strong></p>
+                        <ol>
+                            <li>Allez sur app.hubspot.com</li>
+                            <li>Settings > Conversations > Chatflows</li>
+                            <li>Vérifiez que votre chatflow est en status "Live" (pas "Draft")</li>
+                            <li>Vérifiez les "Target settings" - le domaine doit être autorisé</li>
+                        </ol>
+                    </div>
+                `;
+            } else {
+                statusDiv.innerHTML = `⏳ Vérification ${checkCount}/${maxChecks}... (${checkCount} secondes écoulées)`;
+            }
+        }, 1000);
+        
+        // Log des erreurs de chargement de script
+        document.getElementById('hs-script-loader-eu').onerror = function(e) {
+            console.error('❌ Failed to load EU script:', e);
+        };
+        
+        document.getElementById('hs-script-loader-us').onerror = function(e) {
+            console.error('❌ Failed to load US script:', e);
+        };
+    </script>
+</body>
+</html>

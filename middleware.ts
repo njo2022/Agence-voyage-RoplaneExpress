@@ -11,12 +11,13 @@ export function middleware(request: NextRequest) {
     "default-src 'self'",
     // 'unsafe-eval' nécessaire pour Next.js chunks dynamiques
     // 'unsafe-inline' nécessaire pour les event handlers React
-    "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.emailjs.com https://cdnjs.cloudflare.com https://*.tile.openstreetmap.org",
+    "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.emailjs.com https://cdnjs.cloudflare.com https://*.tile.openstreetmap.org https://js-eu1.hs-scripts.com https://js.hs-scripts.com https://js-eu1.usemessages.com https://js.usemessages.com https://js-eu1.hs-analytics.net https://js.hs-analytics.net https://js-eu1.hscollectedforms.net https://js.hscollectedforms.net https://js-eu1.hs-banner.com https://js.hs-banner.com https://js.hsforms.net https://*.hubspot.com",
     "style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://unpkg.com",
     "img-src 'self' data: https: blob:",
-    "font-src 'self' data:",
-    "connect-src 'self' https://api.emailjs.com https://*.tile.openstreetmap.org",
-    "frame-src 'self'",
+    "font-src 'self' data: https:",
+    "connect-src 'self' https://api.emailjs.com https://*.tile.openstreetmap.org https://api.hubspot.com https://api.hubapi.com https://forms.hubspot.com https://*.hs-sites.com https://*.hsforms.com https://*.hubspot.com https://*.hs-analytics.net https://*.usemessages.com wss://*.hubspot.com wss://*.usemessages.com https://*.hscollectedforms.net https://*.hs-banner.com",
+    "frame-src 'self' https://app.hubspot.com https://app-eu1.hubspot.com https://*.hubspot.com",
+    "worker-src 'self' blob:",
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",
